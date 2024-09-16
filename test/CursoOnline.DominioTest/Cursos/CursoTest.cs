@@ -57,6 +57,23 @@ public class CursoTest
         Assert.Throws<ArgumentException>(() =>
             new Curso(cursoEsperado.Nome, cargaHorariaInvalida, PublicoAlvo.Estudante, cursoEsperado.Valor));
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-100)]
+    public void NaoDeveCursoTerValorMenorQue1(decimal valorCursoInvalido)
+    {
+        var cursoEsperado = new
+        {
+            Nome = "Informática",
+            CargaHoraria = 80,
+            PublicoAlvo = PublicoAlvo.Estudante,
+            Valor = (decimal) 2950
+        };
+
+        Assert.Throws<ArgumentException>(() => new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, PublicoAlvo.Estudante, valorCursoInvalido));
+    }
 }
 
 public enum PublicoAlvo
@@ -80,6 +97,9 @@ public class Curso
             throw new ArgumentException();
         
         if (cargaHoraria < 1)
+            throw new ArgumentException();
+        
+        if (valor < 1)
             throw new ArgumentException();
 
         Nome = nome;
