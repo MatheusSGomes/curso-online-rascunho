@@ -36,8 +36,10 @@ public class CursoTest
             Valor = (decimal) 2950
         };
 
-        Assert.Throws<ArgumentException>(() =>
-            new Curso(nomeCursoInvalido, cursoEsperado.CargaHoraria, PublicoAlvo.Estudante, cursoEsperado.Valor));
+        var message = Assert.Throws<ArgumentException>(() =>
+            new Curso(nomeCursoInvalido, cursoEsperado.CargaHoraria, PublicoAlvo.Estudante, cursoEsperado.Valor)).Message;
+
+        Assert.Equal("Nome inválido", message);
     }
 
     [Theory]
@@ -54,8 +56,10 @@ public class CursoTest
             Valor = (decimal) 2950
         };
         
-        Assert.Throws<ArgumentException>(() =>
-            new Curso(cursoEsperado.Nome, cargaHorariaInvalida, PublicoAlvo.Estudante, cursoEsperado.Valor));
+        var message = Assert.Throws<ArgumentException>(() =>
+            new Curso(cursoEsperado.Nome, cargaHorariaInvalida, PublicoAlvo.Estudante, cursoEsperado.Valor)).Message;
+        
+        Assert.Equal("Carga horária inválida", message);
     }
 
     [Theory]
@@ -72,7 +76,10 @@ public class CursoTest
             Valor = (decimal) 2950
         };
 
-        Assert.Throws<ArgumentException>(() => new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, PublicoAlvo.Estudante, valorCursoInvalido));
+        var message = Assert.Throws<ArgumentException>(() => 
+                new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, PublicoAlvo.Estudante, valorCursoInvalido)).Message;
+
+        Assert.Equal("Valor do curso inválido", message);
     }
 }
 
@@ -94,13 +101,13 @@ public class Curso
     public Curso(string nome, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
     {
         if (string.IsNullOrEmpty(nome))
-            throw new ArgumentException();
-        
+            throw new ArgumentException("Nome inválido");
+
         if (cargaHoraria < 1)
-            throw new ArgumentException();
-        
+            throw new ArgumentException("Carga horária inválida");
+
         if (valor < 1)
-            throw new ArgumentException();
+            throw new ArgumentException("Valor do curso inválido");
 
         Nome = nome;
         CargaHoraria = cargaHoraria;
