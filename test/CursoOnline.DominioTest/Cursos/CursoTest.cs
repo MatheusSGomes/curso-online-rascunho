@@ -4,21 +4,31 @@ using Xunit.Abstractions;
 
 namespace CursoOnline.DominioTest.Curso;
 
-public class CursoTest
+public class CursoTest : IDisposable
 {
+    private readonly ITestOutputHelper _output;
+
     private readonly string _nome;
     private readonly int _cargaHoraria;
     private readonly PublicoAlvo _publicoAlvo;
     private readonly decimal _valor;
 
-    public CursoTest()
+    public CursoTest(ITestOutputHelper output)
     {
+        _output = output;
+        output.WriteLine("Setup");
+        
         _nome = "Informática";
         _cargaHoraria = 80;
         _publicoAlvo = PublicoAlvo.Estudante;
         _valor = 2950;
     }
     
+    public void Dispose()
+    {
+        _output.WriteLine("Cleanup");
+    }
+
     [Fact]
     public void DeveCriarCurso()
     {
