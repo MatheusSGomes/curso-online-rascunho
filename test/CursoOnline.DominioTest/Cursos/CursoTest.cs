@@ -1,4 +1,5 @@
 using Bogus;
+using CursoOnline.Dominio.Cursos;
 using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._Utils;
 using ExpectedObjects;
@@ -89,40 +90,5 @@ public class CursoTest : IDisposable
         Assert.Throws<ArgumentException>(() =>
             CursoBuilder.Novo().ComValor(valorCursoInvalido).Build())
             .ComMensagem("Valor do curso inválido");
-    }
-}
-
-public enum PublicoAlvo
-{
-    Estudante,
-    Universitario,
-    Empregado,
-    Empreendedor
-}
-
-public class Curso
-{
-    public string Nome { get; }
-    public string Descricao { get; }
-    public int CargaHoraria { get; }
-    public PublicoAlvo PublicoAlvo { get; }
-    public decimal Valor { get; }
-
-    public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
-    {
-        if (string.IsNullOrEmpty(nome))
-            throw new ArgumentException("Nome inválido");
-
-        if (cargaHoraria < 1)
-            throw new ArgumentException("Carga horária inválida");
-
-        if (valor < 1)
-            throw new ArgumentException("Valor do curso inválido");
-
-        Nome = nome;
-        Descricao = descricao;
-        CargaHoraria = cargaHoraria;
-        PublicoAlvo = publicoAlvo;
-        Valor = valor;
     }
 }
