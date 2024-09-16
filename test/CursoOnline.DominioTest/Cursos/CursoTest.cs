@@ -1,3 +1,5 @@
+using ExpectedObjects;
+
 namespace CursoOnline.DominioTest.Curso;
 
 public class CursoTest
@@ -6,19 +8,19 @@ public class CursoTest
     public void DeveCriarCurso()
     {
         // Arrange
-        string nome = "Meu Curso";
-        int cargaHoraria = 200;
-        string publicoAlvo = "Estudantes";
-        decimal valor = 2500;
+        var cursoEsperado = new
+        {
+            Nome = "Informática",
+            CargaHoraria = 80,
+            PublicoAlvo = "Estudantes",
+            Valor = (decimal) 2950
+        };
 
         // Act
-        var curso = new Curso(nome, cargaHoraria, publicoAlvo, valor);
+        var curso = new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor);
         
         // Assert
-        Assert.Equal(nome, curso.Nome);
-        Assert.Equal(cargaHoraria, curso.CargaHoraria);
-        Assert.Equal(publicoAlvo, curso.PublicoAlvo);
-        Assert.Equal(valor, curso.Valor);
+        cursoEsperado.ToExpectedObject().ShouldMatch(curso);
     }
 }
 
