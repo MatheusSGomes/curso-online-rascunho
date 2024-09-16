@@ -12,31 +12,38 @@ public class CursoTest
         {
             Nome = "Informática",
             CargaHoraria = 80,
-            PublicoAlvo = "Estudantes",
+            PublicoAlvo = PublicoAlvo.Estudante,
             Valor = (decimal) 2950
         };
 
         // Act
-        var curso = new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor);
+        var curso = new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, PublicoAlvo.Estudante, cursoEsperado.Valor);
         
         // Assert
         cursoEsperado.ToExpectedObject().ShouldMatch(curso);
     }
 }
 
+public enum PublicoAlvo
+{
+    Estudante,
+    Universitario,
+    Empregado,
+    Empreendedor
+}
+
 public class Curso
 {
     public string Nome { get; }
     public int CargaHoraria { get; }
-    public string PublicoAlvo { get; }
+    public PublicoAlvo PublicoAlvo { get; }
     public decimal Valor { get; }
 
-    public Curso(string nome, int cargaHoraria, string publicoAlvo, decimal valor)
+    public Curso(string nome, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
     {
         Nome = nome;
         CargaHoraria = cargaHoraria;
         PublicoAlvo = publicoAlvo;
         Valor = valor;
     }
-        
 }
