@@ -1,14 +1,16 @@
+using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._Utils;
 using ExpectedObjects;
 using Xunit.Abstractions;
 
-namespace CursoOnline.DominioTest.Curso;
+namespace CursoOnline.DominioTest.Cursos;
 
 public class CursoTest : IDisposable
 {
     private readonly ITestOutputHelper _output;
 
     private readonly string _nome;
+    private readonly string _descricao;
     private readonly int _cargaHoraria;
     private readonly PublicoAlvo _publicoAlvo;
     private readonly decimal _valor;
@@ -19,6 +21,7 @@ public class CursoTest : IDisposable
         output.WriteLine("Setup");
         
         _nome = "Informática";
+        _descricao = "Descrição do curso";
         _cargaHoraria = 80;
         _publicoAlvo = PublicoAlvo.Estudante;
         _valor = 2950;
@@ -36,14 +39,20 @@ public class CursoTest : IDisposable
         var cursoEsperado = new
         {
             Nome = _nome,
+            Descricao = _descricao,
             CargaHoraria = _cargaHoraria,
             PublicoAlvo = _publicoAlvo,
             Valor = _valor
         };
 
         // Act
-        var curso = new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, PublicoAlvo.Estudante, cursoEsperado.Valor);
-        
+        var curso = new Curso(
+            cursoEsperado.Nome,
+            cursoEsperado.Descricao,
+            cursoEsperado.CargaHoraria,
+            PublicoAlvo.Estudante,
+            cursoEsperado.Valor);
+
         // Assert
         cursoEsperado.ToExpectedObject().ShouldMatch(curso);
     }
@@ -54,8 +63,7 @@ public class CursoTest : IDisposable
     public void NaoDeveCursoTerUmNomeInvalido(string nomeCursoInvalido)
     {
         Assert.Throws<ArgumentException>(() =>
-            new Curso(nomeCursoInvalido, _cargaHoraria, _publicoAlvo, _valor))
-            .ComMensagem("Nome inválido");
+            CursoBuilder.Novo().ComNome(nomeCursoInvalido).Build());
     }
 
     [Theory]
@@ -65,7 +73,7 @@ public class CursoTest : IDisposable
     public void NaoDeveTerCursoCargaHorariaMenorQue1(int cargaHorariaInvalida)
     {
         Assert.Throws<ArgumentException>(() =>
-            new Curso(_nome, cargaHorariaInvalida, _publicoAlvo, _valor))
+            CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build())
             .ComMensagem("Carga horária inválida");
     }
 
@@ -76,7 +84,7 @@ public class CursoTest : IDisposable
     public void NaoDeveCursoTerValorMenorQue1(decimal valorCursoInvalido)
     {
         Assert.Throws<ArgumentException>(() =>
-            new Curso(_nome, _cargaHoraria, _publicoAlvo, valorCursoInvalido))
+            CursoBuilder.Novo().ComValor(valorCursoInvalido).Build())
             .ComMensagem("Valor do curso inválido");
     }
 }
@@ -92,11 +100,12 @@ public enum PublicoAlvo
 public class Curso
 {
     public string Nome { get; }
+    public string Descricao { get; }
     public int CargaHoraria { get; }
     public PublicoAlvo PublicoAlvo { get; }
     public decimal Valor { get; }
 
-    public Curso(string nome, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
+    public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
     {
         if (string.IsNullOrEmpty(nome))
             throw new ArgumentException("Nome inválido");
@@ -108,6 +117,7 @@ public class Curso
             throw new ArgumentException("Valor do curso inválido");
 
         Nome = nome;
+        Descricao = descricao;
         CargaHoraria = cargaHoraria;
         PublicoAlvo = publicoAlvo;
         Valor = valor;
