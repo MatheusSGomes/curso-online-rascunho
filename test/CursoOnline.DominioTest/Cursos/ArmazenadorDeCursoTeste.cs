@@ -1,3 +1,4 @@
+using Bogus;
 using CursoOnline.Dominio.Cursos;
 using Moq;
 
@@ -5,31 +6,40 @@ namespace CursoOnline.DominioTest.Cursos;
 
 public class ArmazenadorDeCursoTeste
 {
+    private readonly CursoDto _cursoDto;
+    private readonly ArmazenadorDeCurso _armazenadorDeCurso;
+    private readonly Mock<ICursoRepositorio> _cursoRepositoryMock;
+
+    public ArmazenadorDeCursoTeste()
+    {
+        var fake = new Faker();
+
+        _cursoDto = new CursoDto
+        {
+            Nome = fake.Random.Words(),
+            Descricao = fake.Lorem.Paragraphs(),
+            CargaHoraria = fake.Random.Int(1, 100),
+            PublicoAlvo = PublicoAlvo.Estudante,
+            Valor = fake.Random.Int(100, 5000)
+        };
+
+        _cursoRepositoryMock = new Mock<ICursoRepositorio>();
+        _armazenadorDeCurso = new ArmazenadorDeCurso(_cursoRepositoryMock.Object);
+    }
+
     [Fact]
     public void DeveAdicionarCurso()
     {
-        var cursoDto = new CursoDto
-        {
-            Nome = "Nome curso",
-            Descricao = "Descrição do curso",
-            CargaHoraria = 80,
-            PublicoAlvo = PublicoAlvo.Estudante,
-            Valor = 980
-        };
+        _armazenadorDeCurso.Armazenar(_cursoDto);
 
-        var cursoRepositoryMock = new Mock<ICursoRepositorio>();
-
-        var armazenadorDeCurso = new ArmazenadorDeCurso(cursoRepositoryMock.Object);
-        armazenadorDeCurso.Armazenar(cursoDto);
-
-        cursoRepositoryMock.Verify(r => 
+        _cursoRepositoryMock.Verify(r => 
             r.Adicionar(
                 It.Is<Curso>(c => 
-                    c.Nome == cursoDto.Nome && 
-                    c.Descricao == cursoDto.Descricao && 
-                    c.CargaHoraria == cursoDto.CargaHoraria &&
-                    c.PublicoAlvo == cursoDto.PublicoAlvo &&
-                    c.Valor == cursoDto.Valor)));
+                    c.Nome == _cursoDto.Nome && 
+                    c.Descricao == _cursoDto.Descricao && 
+                    c.CargaHoraria == _cursoDto.CargaHoraria &&
+                    c.PublicoAlvo == _cursoDto.PublicoAlvo &&
+                    c.Valor == _cursoDto.Valor)));
     }
 }
 
