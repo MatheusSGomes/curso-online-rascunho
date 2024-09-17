@@ -13,7 +13,7 @@ public class ArmazenadorDeCursoTeste
             Nome = "Nome curso",
             Descricao = "Descrição do curso",
             CargaHoraria = 80,
-            PublicoAlvo = 1,
+            PublicoAlvo = PublicoAlvo.Estudante,
             Valor = 980
         };
 
@@ -23,7 +23,13 @@ public class ArmazenadorDeCursoTeste
         armazenadorDeCurso.Armazenar(cursoDto);
 
         cursoRepositoryMock.Verify(r => 
-            r.Adicionar(It.IsAny<Curso>()));
+            r.Adicionar(
+                It.Is<Curso>(c => 
+                    c.Nome == cursoDto.Nome && 
+                    c.Descricao == cursoDto.Descricao && 
+                    c.CargaHoraria == cursoDto.CargaHoraria &&
+                    c.PublicoAlvo == cursoDto.PublicoAlvo &&
+                    c.Valor == cursoDto.Valor)));
     }
 }
 
@@ -56,6 +62,6 @@ public class CursoDto
     public string Nome { get; set; }
     public string Descricao { get; set; }
     public int CargaHoraria { get; set; }
-    public int PublicoAlvo { get; set; }
+    public PublicoAlvo PublicoAlvo { get; set; }
     public decimal Valor { get; set; }
 }
