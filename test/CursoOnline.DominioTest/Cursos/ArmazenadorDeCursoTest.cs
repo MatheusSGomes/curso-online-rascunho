@@ -1,17 +1,18 @@
 using Bogus;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._Utils;
 using Moq;
 
 namespace CursoOnline.DominioTest.Cursos;
 
-public class ArmazenadorDeCursoTeste
+public class ArmazenadorDeCursoTest
 {
     private readonly CursoDto _cursoDto;
     private readonly ArmazenadorDeCurso _armazenadorDeCurso;
     private readonly Mock<ICursoRepositorio> _cursoRepositoryMock;
 
-    public ArmazenadorDeCursoTeste()
+    public ArmazenadorDeCursoTest()
     {
         var fake = new Faker();
 
@@ -51,42 +52,16 @@ public class ArmazenadorDeCursoTeste
         Assert.Throws<ArgumentException>(() => _armazenadorDeCurso.Armazenar(_cursoDto))
             .ComMensagem("Público Alvo Inválido");
     }
-}
 
-public interface ICursoRepositorio
-{
-    void Adicionar(Curso curso);
-    void Atualizar(Curso curso);
-}
-
-public class ArmazenadorDeCurso
-{
-    private readonly ICursoRepositorio _cursoRepositorio;
-
-    public ArmazenadorDeCurso(ICursoRepositorio cursoRepositorio)
+    [Fact]
+    public void NaoDeveCursoComMesmoNomeDeOutroJaSalvo()
     {
-        _cursoRepositorio = cursoRepositorio;
-    }
+        var cursoJaSalvo = CursoBuilder.Novo().ComNome(_cursoDto.Nome).Build();
 
-    public void Armazenar(CursoDto cursoDto)
-    {
-        Enum.TryParse(typeof(PublicoAlvo), cursoDto.PublicoAlvo, out var publicoAlvo);
-
-        if (publicoAlvo == null)
-            throw new ArgumentException("Público Alvo Inválido");
-
-        var curso = 
-            new Curso(cursoDto.Nome, cursoDto.Descricao, cursoDto.CargaHoraria, (PublicoAlvo) publicoAlvo, cursoDto.Valor);
+        _cursoRepositoryMock.Setup(cursoRepositoryInterface => 
+                cursoRepositoryInterface.ObterPeloNome(_cursoDto.Nome)).Returns(cursoJaSalvo);
         
-        _cursoRepositorio.Adicionar(curso); // testamos se esse método foi chamado
+        Assert.Throws<ArgumentException>(() => _armazenadorDeCurso.Armazenar(_cursoDto))
+            .ComMensagem("Nome do curso já consta no banco de dados");
     }
-}
-
-public class CursoDto
-{
-    public string Nome { get; set; }
-    public string Descricao { get; set; }
-    public int CargaHoraria { get; set; }
-    public string PublicoAlvo { get; set; }
-    public decimal Valor { get; set; }
 }
