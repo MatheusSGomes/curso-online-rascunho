@@ -13,7 +13,7 @@ public static class StartupIoc
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options => 
-            options.UseSqlServer("ConnectionString"));
+            options.UseSqlServer(configuration["ConnectionString"]));
 
         services.AddScoped(typeof(IRepositorio<>), typeof(RepositorioBase<>));
 
