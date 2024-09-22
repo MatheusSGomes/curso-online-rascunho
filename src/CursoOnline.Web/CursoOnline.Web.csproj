@@ -8,11 +8,19 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CursoOnline.Dominio\CursoOnline.Dominio.csproj" />
+      <ProjectReference Include="..\CursoOnline.Ioc\CursoOnline.Ioc.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Views\Curso\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Curso\NovoOuEditar.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>

@@ -1,7 +1,11 @@
+using CursoOnline.Ioc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+StartupIoc.ConfigureServices(builder.Services, builder.Configuration); // chama o projeto para resolver as dependências
 
 var app = builder.Build();
 

@@ -10,6 +10,8 @@ public class Curso : Entidade
     public PublicoAlvo PublicoAlvo { get; }
     public decimal Valor { get; }
 
+    public Curso() { }
+    
     public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
     {
         if (string.IsNullOrEmpty(nome))
