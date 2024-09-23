@@ -4,14 +4,12 @@ namespace CursoOnline.Dominio.Cursos;
 
 public class Curso : Entidade
 {
-    public string Nome { get; }
-    public string Descricao { get; }
-    public int CargaHoraria { get; }
-    public PublicoAlvo PublicoAlvo { get; }
-    public decimal Valor { get; }
+    public string Nome { get; set; }
+    public string Descricao { get; set; }
+    public int CargaHoraria { get; set; }
+    public PublicoAlvo PublicoAlvo { get; set; }
+    public decimal Valor { get; set; }
 
-    public Curso() { }
-    
     public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
     {
         if (string.IsNullOrEmpty(nome))
