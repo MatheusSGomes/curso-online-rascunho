@@ -19,6 +19,8 @@ public static class StartupIoc
 
         services.AddScoped(typeof(ICursoRepositorio), typeof(CursoRepositorio));
 
+        services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
         services.AddScoped<ArmazenadorDeCurso>();
     }
 }
