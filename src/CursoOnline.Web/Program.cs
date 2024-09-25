@@ -24,7 +24,7 @@ app.Use(async (context, next) =>
     var unitOfWork = (IUnitOfWork) context.RequestServices.GetService(typeof(IUnitOfWork));
     
     // O método commit aplica o SaveChanges
-    unitOfWork.Commit();
+    await unitOfWork.Commit();
 });
 
 // Configure the HTTP request pipeline.
