@@ -16,16 +16,6 @@ public class CursoController : Controller
     {
         _armazenadorDeCurso = armazenadorDeCurso;
     }
-    public IActionResult Index()
-    {
-        var cursos = new List<CursoParaListagemDto>();
-        return View("Index", PaginatedList<CursoParaListagemDto>.Create(cursos, Request));
-    }
-
-    public IActionResult Novo()
-    {
-        return View("NovoOuEditar", new CursoDto());
-    }
 
     [HttpPost]
     public IActionResult Salvar(CursoDto model)

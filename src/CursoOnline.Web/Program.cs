@@ -14,6 +14,7 @@ StartupIoc.ConfigureServices(builder.Services, builder.Configuration); // chama 
 
 var app = builder.Build();
 
+// Middleware
 app.Use(async (context, next) =>
 {
     // Após invocar toda a aplicação (classes de negócio, controllers e etc..)
