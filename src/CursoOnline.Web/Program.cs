@@ -1,5 +1,6 @@
 using CursoOnline.Dominio._Base;
 using CursoOnline.Ioc;
+using CursoOnline.Web.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 StartupIoc.ConfigureServices(builder.Services, builder.Configuration); // chama o projeto para resolver as dependências
+
+builder.Services.AddMvc(config =>
+{
+    config.Filters.Add(typeof(CustomExceptionFilter));
+});
 
 var app = builder.Build();
 
