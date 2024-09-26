@@ -1,6 +1,15 @@
-@CursoOnline.Web_HostAddress = http://localhost:5115
+@HostAddress = http://localhost:5115
 
-GET {{CursoOnline.Web_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{HostAddress}}/Curso
+Content-Type: application/json
+Accept: */*
+
+{
+  "nome": "Meu Curso 1",
+  "descricao": "Descrição do curso 1",
+  "cargaHoraria": 10,
+  "publicoAlvo": "Estudante",
+  "valor": 100
+}
 
 ###
