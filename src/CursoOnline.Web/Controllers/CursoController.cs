@@ -6,6 +6,8 @@ using CursoOnline.Web.Utils;
 
 namespace CursoOnline.Web.Controllers;
 
+[ApiController]
+[Route("[controller]")]
 public class CursoController : Controller
 {
     private readonly ArmazenadorDeCurso _armazenadorDeCurso;
