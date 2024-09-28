@@ -13,11 +13,11 @@ public class Curso : Entidade
     public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
     {
         ValidadorDeRegra.Novo()
-            .Quando(string.IsNullOrEmpty(nome), "Nome inválido")
-            .Quando(cargaHoraria < 1, "Carga horária inválida")
-            .Quando(valor < 1, "Valor do curso inválido")
+            .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
+            .Quando(cargaHoraria < 1, Resource.CargaHorariaInvalida)
+            .Quando(valor < 1, Resource.ValorInvalido)
             .DispararExcecaoSeExistir();
-
+    
         Nome = nome;
         Descricao = descricao;
         CargaHoraria = cargaHoraria;
@@ -28,25 +28,25 @@ public class Curso : Entidade
     public void AlterarNome(string nome)
     {
         ValidadorDeRegra.Novo()
-            .Quando(string.IsNullOrEmpty(nome), "Nome inválido")
+            .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
             .DispararExcecaoSeExistir();
-        
+
         Nome = nome;
     }
 
     public void AlterarCargaHoraria(int cargaHoraria)
     {
         ValidadorDeRegra.Novo()
-            .Quando(cargaHoraria < 1, "Carga horária inválida")
+            .Quando(cargaHoraria < 1, Resource.CargaHorariaInvalida)
             .DispararExcecaoSeExistir();
-        
+
         CargaHoraria = cargaHoraria;
     }
 
     public void AlterarValor(decimal valor)
     {
         ValidadorDeRegra.Novo()
-            .Quando(valor < 1, "Valor inválido")
+            .Quando(valor < 1, Resource.ValorInvalido)
             .DispararExcecaoSeExistir();
 
         Valor = valor;

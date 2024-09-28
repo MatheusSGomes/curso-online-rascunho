@@ -71,7 +71,7 @@ public class CursoTest : IDisposable
     {
         Assert.Throws<ExcecaoDeDominio>(() =>
             CursoBuilder.Novo().ComNome(nomeCursoInvalido).Build())
-            .ComMensagem("Nome inválido");
+            .ComMensagem(Resource.NomeInvalido);
     }
 
     [Theory]
@@ -82,7 +82,7 @@ public class CursoTest : IDisposable
     {
         Assert.Throws<ExcecaoDeDominio>(() =>
             CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build())
-            .ComMensagem("Carga horária inválida");
+            .ComMensagem(Resource.CargaHorariaInvalida);
     }
 
     [Theory]
@@ -93,7 +93,7 @@ public class CursoTest : IDisposable
     {
         Assert.Throws<ExcecaoDeDominio>(() =>
             CursoBuilder.Novo().ComValor(valorCursoInvalido).Build())
-            .ComMensagem("Valor do curso inválido");
+            .ComMensagem(Resource.ValorInvalido);
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public class CursoTest : IDisposable
         var curso = CursoBuilder.Novo().Build();
 
         Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarNome(nomeInvalido))
-            .ComMensagem("Nome inválido");
+            .ComMensagem(Resource.NomeInvalido);
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public class CursoTest : IDisposable
         var curso = CursoBuilder.Novo().Build();
         
         Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarCargaHoraria(cargaHorariaInvalida))
-            .ComMensagem("Carga horária inválida");
+            .ComMensagem(Resource.CargaHorariaInvalida);
     }
 
     [Fact]
@@ -160,6 +160,6 @@ public class CursoTest : IDisposable
         var curso = CursoBuilder.Novo().Build();
         
         Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarValor(valorInvalido))
-            .ComMensagem("Valor inválido");
+            .ComMensagem(Resource.ValorInvalido);
     }
 }
