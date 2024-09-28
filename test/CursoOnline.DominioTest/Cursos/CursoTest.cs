@@ -125,4 +125,16 @@ public class CursoTest : IDisposable
         
         Assert.Equal(cargaHorariaEsperada, curso.CargaHoraria);
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-2)]
+    [InlineData(-20)]
+    public void NaoDeveAlterarCargaHorariaInvalida(int cargaHorariaInvalida)
+    {
+        var curso = CursoBuilder.Novo().Build();
+        
+        Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarCargaHoraria(cargaHorariaInvalida))
+            .ComMensagem("Carga horária inválida");
+    }
 }

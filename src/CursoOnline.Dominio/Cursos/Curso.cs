@@ -36,6 +36,10 @@ public class Curso : Entidade
 
     public void AlterarCargaHoraria(int cargaHoraria)
     {
+        ValidadorDeRegra.Novo()
+            .Quando(cargaHoraria < 1, "Carga horária inválida")
+            .DispararExcecaoSeExistir();
+        
         CargaHoraria = cargaHoraria;
     }
 }
