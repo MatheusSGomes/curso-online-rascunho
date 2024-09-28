@@ -76,7 +76,7 @@ public class CursoTest : IDisposable
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-100)]
-    public void NaoDeveTerCursoCargaHorariaMenorQue1(int cargaHorariaInvalida)
+    public void NaoDeveTerCursoCargaHorariaInvalida(int cargaHorariaInvalida)
     {
         Assert.Throws<ExcecaoDeDominio>(() =>
             CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build())
@@ -87,7 +87,7 @@ public class CursoTest : IDisposable
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-100)]
-    public void NaoDeveCursoTerValorMenorQue1(decimal valorCursoInvalido)
+    public void NaoDeveCursoTerValorInvalido(decimal valorCursoInvalido)
     {
         Assert.Throws<ExcecaoDeDominio>(() =>
             CursoBuilder.Novo().ComValor(valorCursoInvalido).Build())
@@ -113,5 +113,16 @@ public class CursoTest : IDisposable
 
         Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarNome(nomeInvalido))
             .ComMensagem("Nome inválido");
+    }
+
+    [Fact]
+    public void DeveAlterarCargaHoraria()
+    {
+        var cargaHorariaEsperada = 20;
+        var curso = CursoBuilder.Novo().Build();
+
+        curso.AlterarCargaHoraria(cargaHorariaEsperada);
+        
+        Assert.Equal(cargaHorariaEsperada, curso.CargaHoraria);
     }
 }

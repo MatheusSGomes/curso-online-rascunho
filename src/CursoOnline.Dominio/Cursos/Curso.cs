@@ -33,4 +33,9 @@ public class Curso : Entidade
         
         Nome = nome;
     }
+
+    public void AlterarCargaHoraria(int cargaHoraria)
+    {
+        CargaHoraria = cargaHoraria;
+    }
 }
