@@ -1,4 +1,5 @@
 using Bogus;
+using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Cursos;
 using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._Utils;
@@ -66,8 +67,9 @@ public class CursoTest : IDisposable
     [InlineData(null)]
     public void NaoDeveCursoTerUmNomeInvalido(string nomeCursoInvalido)
     {
-        Assert.Throws<ArgumentException>(() =>
-            CursoBuilder.Novo().ComNome(nomeCursoInvalido).Build());
+        Assert.Throws<ExcecaoDeDominio>(() =>
+            CursoBuilder.Novo().ComNome(nomeCursoInvalido).Build())
+            .ComMensagem("Nome inválido");
     }
 
     [Theory]
@@ -76,7 +78,7 @@ public class CursoTest : IDisposable
     [InlineData(-100)]
     public void NaoDeveTerCursoCargaHorariaMenorQue1(int cargaHorariaInvalida)
     {
-        Assert.Throws<ArgumentException>(() =>
+        Assert.Throws<ExcecaoDeDominio>(() =>
             CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build())
             .ComMensagem("Carga horária inválida");
     }
@@ -87,7 +89,7 @@ public class CursoTest : IDisposable
     [InlineData(-100)]
     public void NaoDeveCursoTerValorMenorQue1(decimal valorCursoInvalido)
     {
-        Assert.Throws<ArgumentException>(() =>
+        Assert.Throws<ExcecaoDeDominio>(() =>
             CursoBuilder.Novo().ComValor(valorCursoInvalido).Build())
             .ComMensagem("Valor do curso inválido");
     }
