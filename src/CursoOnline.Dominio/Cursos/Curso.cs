@@ -24,4 +24,13 @@ public class Curso : Entidade
         PublicoAlvo = publicoAlvo;
         Valor = valor;
     }
+
+    public void AlterarNome(string nome)
+    {
+        ValidadorDeRegra.Novo()
+            .Quando(string.IsNullOrEmpty(nome), "Nome inválido")
+            .DispararExcecaoSeExistir();
+        
+        Nome = nome;
+    }
 }

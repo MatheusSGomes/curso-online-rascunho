@@ -93,4 +93,25 @@ public class CursoTest : IDisposable
             CursoBuilder.Novo().ComValor(valorCursoInvalido).Build())
             .ComMensagem("Valor do curso inválido");
     }
+
+    [Fact]
+    public void DeveAlterarNome()
+    {
+        var nomeEsperado = "José";
+        var curso = CursoBuilder.Novo().Build();
+        curso.AlterarNome(nomeEsperado);
+        
+        Assert.Equal(nomeEsperado, curso.Nome);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void NaoDeveAlterarComNomeInvalido(string nomeInvalido)
+    {
+        var curso = CursoBuilder.Novo().Build();
+
+        Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarNome(nomeInvalido))
+            .ComMensagem("Nome inválido");
+    }
 }
