@@ -18,18 +18,20 @@ public class CursoTest : IDisposable
     private readonly PublicoAlvo _publicoAlvo;
     private readonly decimal _valor;
 
+    private readonly Faker _faker;
+
     public CursoTest(ITestOutputHelper output)
     {
         _output = output;
         output.WriteLine("Setup");
         
-        var faker = new Faker();
+        _faker = new Faker();
         
-        _nome = faker.Random.Words();
-        _descricao = faker.Lorem.Paragraph();
-        _cargaHoraria = faker.Random.Int(50, 1000);
+        _nome = _faker.Random.Words();
+        _descricao = _faker.Lorem.Paragraph();
+        _cargaHoraria = _faker.Random.Int(50, 1000);
         _publicoAlvo = PublicoAlvo.Estudante;
-        _valor = faker.Random.Int(100, 5000);
+        _valor = _faker.Random.Int(100, 5000);
     }
     
     public void Dispose()
@@ -97,7 +99,7 @@ public class CursoTest : IDisposable
     [Fact]
     public void DeveAlterarNome()
     {
-        var nomeEsperado = "José";
+        var nomeEsperado = _faker.Person.FullName;
         var curso = CursoBuilder.Novo().Build();
         curso.AlterarNome(nomeEsperado);
         
