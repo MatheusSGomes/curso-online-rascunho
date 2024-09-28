@@ -45,6 +45,10 @@ public class Curso : Entidade
 
     public void AlterarValor(decimal valor)
     {
+        ValidadorDeRegra.Novo()
+            .Quando(valor < 1, "Valor inválido")
+            .DispararExcecaoSeExistir();
+
         Valor = valor;
     }
 }

@@ -148,4 +148,16 @@ public class CursoTest : IDisposable
 
         Assert.Equal(valorEsperado, curso.Valor);
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-100)]
+    public void NaoDeveAlterarComValorInvalido(decimal valorInvalido)
+    {
+        var curso = CursoBuilder.Novo().Build();
+        
+        Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarValor(valorInvalido))
+            .ComMensagem("Valor inválido");
+    }
 }
