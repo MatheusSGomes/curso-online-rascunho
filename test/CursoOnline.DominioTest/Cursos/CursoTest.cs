@@ -137,4 +137,15 @@ public class CursoTest : IDisposable
         Assert.Throws<ExcecaoDeDominio>(() => curso.AlterarCargaHoraria(cargaHorariaInvalida))
             .ComMensagem("Carga horária inválida");
     }
+
+    [Fact]
+    public void DeveAlterarValor()
+    {
+        var valorEsperado = (decimal) 234.99;
+        var curso = CursoBuilder.Novo().Build();
+
+        curso.AlterarValor(valorEsperado);
+
+        Assert.Equal(valorEsperado, curso.Valor);
+    }
 }

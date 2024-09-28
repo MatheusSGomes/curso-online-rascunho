@@ -42,4 +42,9 @@ public class Curso : Entidade
         
         CargaHoraria = cargaHoraria;
     }
+
+    public void AlterarValor(decimal valor)
+    {
+        Valor = valor;
+    }
 }
