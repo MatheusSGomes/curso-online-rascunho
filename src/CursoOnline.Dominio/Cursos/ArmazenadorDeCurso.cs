@@ -31,6 +31,8 @@ public class ArmazenadorDeCurso
             curso.AlterarCargaHoraria(cursoDto.CargaHoraria);
         }
 
-        _cursoRepositorio.Adicionar(curso); // testamos se esse método foi chamado
+        if (cursoDto.Id == 0)
+            _cursoRepositorio.Adicionar(curso); // testamos se esse método foi chamado
+        
     }
 }

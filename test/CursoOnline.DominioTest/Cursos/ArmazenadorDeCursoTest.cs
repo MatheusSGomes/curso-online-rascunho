@@ -81,4 +81,18 @@ public class ArmazenadorDeCursoTest
         Assert.Equal(_cursoDto.Valor, curso.Valor);
         Assert.Equal(_cursoDto.CargaHoraria, curso.CargaHoraria);
     }
+    
+    [Fact]
+    public void NaoDeveAdicionaNoRepositorioQuandoCursoJaExiste()
+    {
+        _cursoDto.Id = 123;
+    
+        var curso = CursoBuilder.Novo().Build();
+        _cursoRepositoryMock.Setup(r => r.ObterPorId(_cursoDto.Id))
+            .Returns(curso);
+    
+        _armazenadorDeCurso.Armazenar(_cursoDto);
+        
+        _cursoRepositoryMock.Verify(r => r.Adicionar(It.IsAny<Curso>()), Times.Never);
+    }
 }
