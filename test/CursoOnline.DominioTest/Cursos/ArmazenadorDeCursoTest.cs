@@ -51,7 +51,7 @@ public class ArmazenadorDeCursoTest
         _cursoDto.PublicoAlvo = publicoAlvoInvalido;
 
         Assert.Throws<ExcecaoDeDominio>(() => _armazenadorDeCurso.Armazenar(_cursoDto))
-            .ComMensagem("Público Alvo Inválido");
+            .ComMensagem(Resource.PublicoAlvoInvalido);
     }
 
     [Fact]
@@ -63,6 +63,6 @@ public class ArmazenadorDeCursoTest
                 cursoRepositoryInterface.ObterPeloNome(_cursoDto.Nome)).Returns(cursoJaSalvo);
         
         Assert.Throws<ExcecaoDeDominio>(() => _armazenadorDeCurso.Armazenar(_cursoDto))
-            .ComMensagem("Nome do curso já consta no banco de dados");
+            .ComMensagem(Resource.NomeDoCursoJaExiste);
     }
 }

@@ -28,6 +28,7 @@ public class CursoController : Controller
         if (cursos.Any())
         {
             // Nunca renderizar o domínio, sempre fazer a conversão para DTO
+            // Posso usar um adapter aqui
             var dtos = cursos.Select(c => new CursoParaListagemDto
             {
                 Id = c.Id,
