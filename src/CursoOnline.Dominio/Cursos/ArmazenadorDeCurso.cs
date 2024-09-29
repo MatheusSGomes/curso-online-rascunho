@@ -23,6 +23,14 @@ public class ArmazenadorDeCurso
         var curso = 
             new Curso(cursoDto.Nome, cursoDto.Descricao, cursoDto.CargaHoraria, publicoAlvo, cursoDto.Valor);
 
+        if (cursoDto.Id > 0)
+        {
+            curso = _cursoRepositorio.ObterPorId(cursoDto.Id);
+            curso.AlterarNome(cursoDto.Nome);
+            curso.AlterarValor(cursoDto.Valor);
+            curso.AlterarCargaHoraria(cursoDto.CargaHoraria);
+        }
+
         _cursoRepositorio.Adicionar(curso); // testamos se esse método foi chamado
     }
 }

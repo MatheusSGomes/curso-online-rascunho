@@ -61,8 +61,24 @@ public class ArmazenadorDeCursoTest
 
         _cursoRepositoryMock.Setup(cursoRepositoryInterface => 
                 cursoRepositoryInterface.ObterPeloNome(_cursoDto.Nome)).Returns(cursoJaSalvo);
-        
+
         Assert.Throws<ExcecaoDeDominio>(() => _armazenadorDeCurso.Armazenar(_cursoDto))
             .ComMensagem(Resource.NomeDoCursoJaExiste);
+    }
+
+    [Fact]
+    public void DeveAlterarDadosDoCurso()
+    {
+        _cursoDto.Id = 123;
+
+        var curso = CursoBuilder.Novo().Build();
+        _cursoRepositoryMock.Setup(r => r.ObterPorId(_cursoDto.Id))
+            .Returns(curso);
+
+        _armazenadorDeCurso.Armazenar(_cursoDto);
+
+        Assert.Equal(_cursoDto.Nome, curso.Nome);
+        Assert.Equal(_cursoDto.Valor, curso.Valor);
+        Assert.Equal(_cursoDto.CargaHoraria, curso.CargaHoraria);
     }
 }

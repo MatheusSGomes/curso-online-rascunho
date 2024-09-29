@@ -1,9 +1,6 @@
-using System.Diagnostics;
 using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Cursos;
 using Microsoft.AspNetCore.Mvc;
-using CursoOnline.Web.Models;
-using CursoOnline.Web.Utils;
 
 namespace CursoOnline.Web.Controllers;
 
