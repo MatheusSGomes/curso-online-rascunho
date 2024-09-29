@@ -16,7 +16,7 @@ public class ArmazenadorDeCurso
         var cursoJaSalvo = _cursoRepositorio.ObterPeloNome(cursoDto.Nome);
         
         ValidadorDeRegra.Novo()
-            .Quando(cursoJaSalvo != null, Resource.NomeDoCursoJaExiste)
+            .Quando(cursoJaSalvo != null && cursoJaSalvo.Id != cursoDto.Id, Resource.NomeDoCursoJaExiste)
             .Quando(!Enum.TryParse<PublicoAlvo>(cursoDto.PublicoAlvo, out var publicoAlvo), Resource.PublicoAlvoInvalido)
             .DispararExcecaoSeExistir();
 

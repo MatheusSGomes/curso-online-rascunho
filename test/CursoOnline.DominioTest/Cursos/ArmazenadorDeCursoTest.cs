@@ -57,7 +57,7 @@ public class ArmazenadorDeCursoTest
     [Fact]
     public void NaoDeveCursoComMesmoNomeDeOutroJaSalvo()
     {
-        var cursoJaSalvo = CursoBuilder.Novo().ComNome(_cursoDto.Nome).Build();
+        var cursoJaSalvo = CursoBuilder.Novo().ComId(321).ComNome(_cursoDto.Nome).Build();
 
         _cursoRepositoryMock.Setup(cursoRepositoryInterface => 
                 cursoRepositoryInterface.ObterPeloNome(_cursoDto.Nome)).Returns(cursoJaSalvo);
