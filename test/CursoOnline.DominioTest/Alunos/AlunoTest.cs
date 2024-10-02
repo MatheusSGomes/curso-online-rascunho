@@ -54,14 +54,20 @@ public class AlunoTest
         // Assert
         alunoEsperado.ToExpectedObject().ShouldMatch(aluno);
     }
+
+    [Fact]
+    public void DevePermitirEditarNomeAluno()
+    {
+        
+    }
 }
 
 public class Aluno
 {
-    public string Nome { get; set; }
-    public string Cpf { get; set; }
-    public string Email { get; set; }
-    public PublicoAlvo PublicoAlvo { get; set; }
+    public string Nome { get; protected set; }
+    public string Cpf { get; protected set; }
+    public string Email { get; protected set; }
+    public PublicoAlvo PublicoAlvo { get; protected set; }
 
     public Aluno(string nome, string cpf, string email, PublicoAlvo publicoAlvo)
     {
@@ -69,5 +75,49 @@ public class Aluno
         Cpf = cpf;
         Email = email;
         PublicoAlvo = publicoAlvo;
+    }
+
+    public void AlterarNome(string nome)
+    {
+        Nome = nome;
+    }
+}
+
+public class AlunoBuilder
+{
+    private readonly Faker _faker;
+    private string _nome;
+    private readonly string _cpf;
+    private readonly string _email;
+    private readonly PublicoAlvo _publicoAlvo;
+
+    public AlunoBuilder()
+    {
+        _nome = _faker.Person.FullName;
+        _cpf = _faker.Person.Cpf(true);
+        _email = _faker.Person.Email;
+        _publicoAlvo = PublicoAlvo.Estudante;
+    }
+
+    public static AlunoBuilder Novo()
+    {
+        return new AlunoBuilder();
+    }
+
+    public AlunoBuilder ComNome(string nome)
+    {
+        _nome = nome;
+        return this;
+    }
+
+    public Aluno Build()
+    {
+        var aluno = new Aluno(
+            _nome,
+            _cpf,
+            _email,
+            _publicoAlvo);
+
+        return aluno;
     }
 }
