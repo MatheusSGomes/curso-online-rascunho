@@ -58,7 +58,15 @@ public class AlunoTest
     [Fact]
     public void DevePermitirEditarNomeAluno()
     {
-        
+        var nomeAluno = _faker.Person.FullName;
+
+        var aluno = AlunoBuilder.Novo()
+            .ComNome(nomeAluno)
+            .Build();
+
+        aluno.AlterarNome(nomeAluno);
+
+        Assert.Equal(nomeAluno, aluno.Nome);
     }
 }
 
@@ -85,7 +93,7 @@ public class Aluno
 
 public class AlunoBuilder
 {
-    private readonly Faker _faker;
+    private readonly Faker _faker  = new Faker();
     private string _nome;
     private readonly string _cpf;
     private readonly string _email;
