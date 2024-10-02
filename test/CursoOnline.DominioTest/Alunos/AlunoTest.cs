@@ -1,3 +1,5 @@
+using Bogus;
+using Bogus.Extensions.Brazil;
 using CursoOnline.Dominio.Cursos;
 using ExpectedObjects;
 
@@ -17,6 +19,18 @@ public class AlunoTest
     private string _cpf;
     private string _email;
     private PublicoAlvo _publicoAlvo;
+
+    private readonly Faker _faker;
+
+    public AlunoTest()
+    {
+        _faker = new Faker();
+
+        _nome = _faker.Person.FullName;
+        _cpf = _faker.Person.Cpf(true);
+        _email = _faker.Person.Email;
+        _publicoAlvo = PublicoAlvo.Estudante;
+    }
 
     [Fact]
     public void DeveCadastrarUmAluno()
