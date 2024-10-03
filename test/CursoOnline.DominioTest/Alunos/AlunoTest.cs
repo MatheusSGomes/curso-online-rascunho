@@ -75,6 +75,15 @@ public class AlunoTest
     [Theory]
     [InlineData("")]
     [InlineData(null)]
+    public void NaoDeveCriarAlunoComNomeInvalido(string nomeInvalido)
+    {
+        Assert.Throws<ExcecaoDeDominio>(() => 
+            AlunoBuilder.Novo().ComNome(nomeInvalido).Build()).ComMensagem(Resource.NomeInvalido);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
     public void NaoDeveAlterarNomeInvalido(string nomeInvalido)
     {
         var aluno = AlunoBuilder.Novo().Build();
@@ -93,6 +102,10 @@ public class Aluno
 
     public Aluno(string nome, string cpf, string email, PublicoAlvo publicoAlvo)
     {
+        ValidadorDeRegra.Novo()
+            .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
+            .DispararExcecaoSeExistir();
+        
         Nome = nome;
         Cpf = cpf;
         Email = email;
