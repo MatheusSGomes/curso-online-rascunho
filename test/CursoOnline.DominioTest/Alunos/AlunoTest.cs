@@ -1,8 +1,9 @@
-using System.Text.RegularExpressions;
 using Bogus;
 using Bogus.Extensions.Brazil;
 using CursoOnline.Dominio._Base;
+using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._Utils;
 using ExpectedObjects;
 
@@ -40,7 +41,6 @@ public class AlunoTest
     [Fact]
     public void DeveCadastrarUmAluno()
     {
-        // Arrange
         var alunoEsperado = new
         {
             Nome = _nome,
@@ -49,14 +49,12 @@ public class AlunoTest
             PublicoAlvo = _publicoAlvo,
         };
 
-        // Act
         var aluno = new Aluno(
             alunoEsperado.Nome,
             alunoEsperado.Cpf,
             alunoEsperado.Email,
             alunoEsperado.PublicoAlvo);
 
-        // Assert
         alunoEsperado.ToExpectedObject().ShouldMatch(aluno);
     }
 
@@ -113,90 +111,5 @@ public class AlunoTest
     {
         Assert.Throws<ExcecaoDeDominio>(() => AlunoBuilder.Novo().ComEmail(emailInvalido).Build())
             .ComMensagem(Resource.EmailInvalido);
-    }
-}
-
-public class Aluno
-{
-    public string Nome { get; protected set; }
-    public string Cpf { get; protected set; }
-    public string Email { get; protected set; }
-    public PublicoAlvo PublicoAlvo { get; protected set; }
-    
-    private readonly Regex _emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-    private readonly Regex _cpfRegex = new Regex(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
-
-    public Aluno(string nome, string cpf, string email, PublicoAlvo publicoAlvo)
-    {
-        ValidadorDeRegra.Novo()
-            .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
-            .Quando(string.IsNullOrEmpty(cpf) || !_emailRegex.Match(cpf).Success, Resource.CpfInvalido)
-            .Quando(string.IsNullOrEmpty(email) || !_emailRegex.Match(email).Success, Resource.EmailInvalido)
-            .DispararExcecaoSeExistir();
-        
-        Nome = nome;
-        Cpf = cpf;
-        Email = email;
-        PublicoAlvo = publicoAlvo;
-    }
-
-    public void AlterarNome(string nome)
-    {
-        ValidadorDeRegra.Novo()
-            .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
-            .DispararExcecaoSeExistir();
-
-        Nome = nome;
-    }
-}
-
-public class AlunoBuilder
-{
-    private readonly Faker _faker  = new Faker();
-    private string _nome;
-    private string _cpf;
-    private string _email;
-    private PublicoAlvo _publicoAlvo;
-
-    public AlunoBuilder()
-    {
-        _nome = _faker.Person.FullName;
-        _cpf = _faker.Person.Cpf(true);
-        _email = _faker.Person.Email;
-        _publicoAlvo = PublicoAlvo.Estudante;
-    }
-
-    public static AlunoBuilder Novo()
-    {
-        return new AlunoBuilder();
-    }
-
-    public AlunoBuilder ComNome(string nome)
-    {
-        _nome = nome;
-        return this;
-    }
-    
-    public AlunoBuilder ComCpf(string cpf)
-    {
-        _cpf = cpf;
-        return this;
-    }
-    
-    public AlunoBuilder ComEmail(string email)
-    {
-        _email = email;
-        return this;
-    }
-
-    public Aluno Build()
-    {
-        var aluno = new Aluno(
-            _nome,
-            _cpf,
-            _email,
-            _publicoAlvo);
-
-        return aluno;
     }
 }
