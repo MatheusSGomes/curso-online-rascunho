@@ -100,6 +100,15 @@ public class AlunoTest
         Assert.Throws<ExcecaoDeDominio>(() => AlunoBuilder.Novo().ComCpf(cpfInvalido).Build())
             .ComMensagem(Resource.CpfInvalido);
     }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void NaoDeveCriarAlunoComEmailInvalido(string emailInvalido)
+    {
+        Assert.Throws<ExcecaoDeDominio>(() => AlunoBuilder.Novo().ComEmail(emailInvalido).Build())
+            .ComMensagem(Resource.EmailInvalido);
+    }
 }
 
 public class Aluno
@@ -117,6 +126,10 @@ public class Aluno
         
         ValidadorDeRegra.Novo()
             .Quando(string.IsNullOrEmpty(cpf), Resource.CpfInvalido)
+            .DispararExcecaoSeExistir();
+        
+        ValidadorDeRegra.Novo()
+            .Quando(string.IsNullOrEmpty(email), Resource.EmailInvalido)
             .DispararExcecaoSeExistir();
         
         Nome = nome;
@@ -165,6 +178,12 @@ public class AlunoBuilder
     public AlunoBuilder ComCpf(string cpf)
     {
         _cpf = cpf;
+        return this;
+    }
+    
+    public AlunoBuilder ComEmail(string email)
+    {
+        _email = email;
         return this;
     }
 
