@@ -96,6 +96,8 @@ public class AlunoTest
     [Theory]
     [InlineData("")]
     [InlineData(null)]
+    [InlineData("CPF inválido")]
+    [InlineData("00000000000")]
     public void NaoDeveCriarAlunoComCpfInvalido(string cpfInvalido)
     {
         Assert.Throws<ExcecaoDeDominio>(() => AlunoBuilder.Novo().ComCpf(cpfInvalido).Build())
@@ -128,7 +130,7 @@ public class Aluno
     {
         ValidadorDeRegra.Novo()
             .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
-            .Quando(string.IsNullOrEmpty(cpf) /*|| !_emailRegex.Match(cpf).Success*/, Resource.CpfInvalido)
+            .Quando(string.IsNullOrEmpty(cpf) || !_emailRegex.Match(cpf).Success, Resource.CpfInvalido)
             .Quando(string.IsNullOrEmpty(email) || !_emailRegex.Match(email).Success, Resource.EmailInvalido)
             .DispararExcecaoSeExistir();
         
