@@ -100,8 +100,9 @@ public class Aluno
 
     public void AlterarNome(string nome)
     {
-        if (string.IsNullOrEmpty(nome))
-            throw new ExcecaoDeDominio(new List<string> { Resource.NomeInvalido });
+        ValidadorDeRegra.Novo()
+            .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
+            .DispararExcecaoSeExistir();
 
         Nome = nome;
     }
