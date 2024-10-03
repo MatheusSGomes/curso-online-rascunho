@@ -1,6 +1,8 @@
 using Bogus;
 using Bogus.Extensions.Brazil;
+using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.DominioTest._Utils;
 using ExpectedObjects;
 
 namespace CursoOnline.DominioTest.Alunos;
@@ -68,6 +70,17 @@ public class AlunoTest
 
         Assert.Equal(nomeAluno, aluno.Nome);
     }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void NaoDeveAlterarNomeInvalido(string nomeInvalido)
+    {
+        var aluno = AlunoBuilder.Novo().Build();
+
+        Assert.Throws<ExcecaoDeDominio>(() => aluno.AlterarNome(nomeInvalido))
+            .ComMensagem(Resource.NomeInvalido);
+    }
 }
 
 public class Aluno
@@ -87,6 +100,9 @@ public class Aluno
 
     public void AlterarNome(string nome)
     {
+        if (string.IsNullOrEmpty(nome))
+            throw new ExcecaoDeDominio(new List<string> { Resource.NomeInvalido });
+
         Nome = nome;
     }
 }
