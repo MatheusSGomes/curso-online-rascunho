@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Bogus;
 using Bogus.Extensions.Brazil;
 using CursoOnline.Dominio._Base;
@@ -104,6 +105,8 @@ public class AlunoTest
     [Theory]
     [InlineData("")]
     [InlineData(null)]
+    [InlineData("email inválido")]
+    [InlineData("email@invalido")]
     public void NaoDeveCriarAlunoComEmailInvalido(string emailInvalido)
     {
         Assert.Throws<ExcecaoDeDominio>(() => AlunoBuilder.Novo().ComEmail(emailInvalido).Build())
@@ -117,19 +120,16 @@ public class Aluno
     public string Cpf { get; protected set; }
     public string Email { get; protected set; }
     public PublicoAlvo PublicoAlvo { get; protected set; }
+    
+    private readonly Regex _emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+    private readonly Regex _cpfRegex = new Regex(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
 
     public Aluno(string nome, string cpf, string email, PublicoAlvo publicoAlvo)
     {
         ValidadorDeRegra.Novo()
             .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
-            .DispararExcecaoSeExistir();
-        
-        ValidadorDeRegra.Novo()
-            .Quando(string.IsNullOrEmpty(cpf), Resource.CpfInvalido)
-            .DispararExcecaoSeExistir();
-        
-        ValidadorDeRegra.Novo()
-            .Quando(string.IsNullOrEmpty(email), Resource.EmailInvalido)
+            .Quando(string.IsNullOrEmpty(cpf) /*|| !_emailRegex.Match(cpf).Success*/, Resource.CpfInvalido)
+            .Quando(string.IsNullOrEmpty(email) || !_emailRegex.Match(email).Success, Resource.EmailInvalido)
             .DispararExcecaoSeExistir();
         
         Nome = nome;
