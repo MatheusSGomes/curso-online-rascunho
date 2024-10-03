@@ -77,8 +77,8 @@ public class AlunoTest
     [InlineData(null)]
     public void NaoDeveCriarAlunoComNomeInvalido(string nomeInvalido)
     {
-        Assert.Throws<ExcecaoDeDominio>(() => 
-            AlunoBuilder.Novo().ComNome(nomeInvalido).Build()).ComMensagem(Resource.NomeInvalido);
+        Assert.Throws<ExcecaoDeDominio>(() => AlunoBuilder.Novo().ComNome(nomeInvalido).Build())
+            .ComMensagem(Resource.NomeInvalido);
     }
 
     [Theory]
@@ -90,6 +90,15 @@ public class AlunoTest
 
         Assert.Throws<ExcecaoDeDominio>(() => aluno.AlterarNome(nomeInvalido))
             .ComMensagem(Resource.NomeInvalido);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void NaoDeveCriarAlunoComCpfInvalido(string cpfInvalido)
+    {
+        Assert.Throws<ExcecaoDeDominio>(() => AlunoBuilder.Novo().ComCpf(cpfInvalido).Build())
+            .ComMensagem(Resource.CpfInvalido);
     }
 }
 
@@ -104,6 +113,10 @@ public class Aluno
     {
         ValidadorDeRegra.Novo()
             .Quando(string.IsNullOrEmpty(nome), Resource.NomeInvalido)
+            .DispararExcecaoSeExistir();
+        
+        ValidadorDeRegra.Novo()
+            .Quando(string.IsNullOrEmpty(cpf), Resource.CpfInvalido)
             .DispararExcecaoSeExistir();
         
         Nome = nome;
@@ -126,9 +139,9 @@ public class AlunoBuilder
 {
     private readonly Faker _faker  = new Faker();
     private string _nome;
-    private readonly string _cpf;
-    private readonly string _email;
-    private readonly PublicoAlvo _publicoAlvo;
+    private string _cpf;
+    private string _email;
+    private PublicoAlvo _publicoAlvo;
 
     public AlunoBuilder()
     {
@@ -146,6 +159,12 @@ public class AlunoBuilder
     public AlunoBuilder ComNome(string nome)
     {
         _nome = nome;
+        return this;
+    }
+    
+    public AlunoBuilder ComCpf(string cpf)
+    {
+        _cpf = cpf;
         return this;
     }
 
