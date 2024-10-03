@@ -14,6 +14,8 @@ namespace CursoOnline.DominioTest.Alunos;
  * 
  * Eu, enquanto administrador do sistema, quero editar somente
  * o nome do Aluno para poder corrigi-lo em caso de erro.
+ *
+ * Validar CPF, Validar Email
  */
 public class AlunoTest
 {
@@ -60,15 +62,14 @@ public class AlunoTest
     [Fact]
     public void DevePermitirEditarNomeAluno()
     {
-        var nomeAluno = _faker.Person.FullName;
+        var nomeAlunoEsperado = _faker.Person.FullName;
 
         var aluno = AlunoBuilder.Novo()
-            .ComNome(nomeAluno)
             .Build();
 
-        aluno.AlterarNome(nomeAluno);
+        aluno.AlterarNome(nomeAlunoEsperado);
 
-        Assert.Equal(nomeAluno, aluno.Nome);
+        Assert.Equal(nomeAlunoEsperado, aluno.Nome);
     }
 
     [Theory]
