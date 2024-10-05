@@ -28,7 +28,8 @@ public class ArmazenadorDeAlunoTest
          * Verifico se foi passado algum parâmetro do tipo Aluno para ele.
          */
         alunoRepositoryMock.Verify(
-            alunoRepository => alunoRepository.Adicionar(It.IsAny<Aluno>()));
+            alunoRepository => alunoRepository.Adicionar(It.Is<Aluno>(a => a.Nome == alunoDto.Nome)),
+            Times.Once());
     }
 }
 
