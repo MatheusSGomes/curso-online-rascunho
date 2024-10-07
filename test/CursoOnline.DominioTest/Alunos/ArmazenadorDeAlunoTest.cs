@@ -35,18 +35,7 @@ public class ArmazenadorDeAlunoTest
     [Fact]
     public void DeveAdicionarAluno()
     {
-        var alunoDto = new AlunoDto
-        {
-            Nome = "Matheus",
-            Cpf = "987.654.321-12",
-            Email = "matheus@gmail.com",
-            PublicoAlvo = PublicoAlvo.Estudante.ToString()
-        };
-
-        var alunoRepositoryMock = new Mock<IAlunoRepository>();
-
-        var armazenadorDeAluno = new ArmazenadorDeAluno(alunoRepositoryMock.Object);
-        armazenadorDeAluno.Armazenar(alunoDto);
+        _armazenadorDeAluno.Armazenar(_alunoDto);
 
         /*
          * Verifico se o método 'Adicionar' foi chamado.
@@ -54,8 +43,8 @@ public class ArmazenadorDeAlunoTest
          * Verifico se no parâmetro passado tem a propriedade Nome e ela é igual a Nome da DTO (posso testar outras propriedades também).
          * Verifico se o método 'Adicionar' foi chamado apenas 1 vez.
          */
-        alunoRepositoryMock.Verify(
-            alunoRepository => alunoRepository.Adicionar(It.Is<Aluno>(a => a.Nome == alunoDto.Nome)),
+        _alunoRepository.Verify(
+            alunoRepository => alunoRepository.Adicionar(It.Is<Aluno>(a => a.Nome == _alunoDto.Nome)),
             Times.Once());
     }
 
@@ -140,7 +129,7 @@ public class ArmazenadorDeAluno
             .Quando(validaSeAlunoJaExiste, Resource.CpfInvalido)
             .DispararExcecaoSeExistir();
 
-        if (alunoDto.Id > 0)
+        if (alunoDto.Id == 0)
         {
             var aluno = new Aluno(alunoDto.Nome, alunoDto.Cpf, alunoDto.Email, PublicoAlvo.Estudante);
             _alunoRepository.Adicionar(aluno);
