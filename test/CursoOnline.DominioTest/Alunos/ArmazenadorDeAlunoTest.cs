@@ -1,3 +1,5 @@
+using Bogus;
+using Bogus.Extensions.Brazil;
 using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
@@ -9,6 +11,27 @@ namespace CursoOnline.DominioTest.Alunos;
 
 public class ArmazenadorDeAlunoTest
 {
+    private readonly Faker _faker;
+    private readonly AlunoDto _alunoDto;
+    private readonly Mock<IAlunoRepository> _alunoRepository;
+    private readonly ArmazenadorDeAluno _armazenadorDeAluno;
+
+    public ArmazenadorDeAlunoTest()
+    {
+        _faker = new Faker();
+
+        _alunoDto = new AlunoDto
+        {
+            Nome = _faker.Person.FullName,
+            Email = _faker.Person.Email,
+            Cpf = _faker.Person.Cpf(),
+            PublicoAlvo = PublicoAlvo.Estudante.ToString()
+        };
+
+        _alunoRepository = new Mock<IAlunoRepository>();
+        _armazenadorDeAluno = new ArmazenadorDeAluno(_alunoRepository.Object);
+    }
+
     [Fact]
     public void DeveAdicionarAluno()
     {
@@ -17,7 +40,7 @@ public class ArmazenadorDeAlunoTest
             Nome = "Matheus",
             Cpf = "987.654.321-12",
             Email = "matheus@gmail.com",
-            PublicoAlvo = PublicoAlvo.Estudante
+            PublicoAlvo = PublicoAlvo.Estudante.ToString()
         };
 
         var alunoRepositoryMock = new Mock<IAlunoRepository>();
@@ -49,12 +72,39 @@ public class ArmazenadorDeAlunoTest
         var alunoRepositoryMock = new Mock<IAlunoRepository>();
         var armazenadorDeAluno = new ArmazenadorDeAluno(alunoRepositoryMock.Object);
 
+        // Faço o mock, como se 'aluno' já estivesse cadastrado
         alunoRepositoryMock.Setup(alunoRepository => alunoRepository.ObterPorCpf("987.654.321-12"))
             .Returns(aluno);
 
+        // Ao tentar cadastrar novamente é lançada a exception
         Assert.Throws<ExcecaoDeDominio>(() =>
                 armazenadorDeAluno.Armazenar(alunoDto))
             .ComMensagem(Resource.CpfInvalido);
+    }
+
+    [Fact]
+    public void DeveAlterarNomeAluno()
+    {
+        var alunoDto = new AlunoDto
+        {
+            Id = 123,
+            Nome = "Matheus",
+            Cpf = "987.654.321-12",
+            Email = "matheus@gmail.com",
+            PublicoAlvo = PublicoAlvo.Estudante.ToString()
+        };
+
+        var alunoSalvo = AlunoBuilder.Novo().Build();
+
+        var alunoRepositoryMock = new Mock<IAlunoRepository>();
+        var armazenadorDeAluno = new ArmazenadorDeAluno(alunoRepositoryMock.Object);
+
+        alunoRepositoryMock.Setup(cursoRepository => cursoRepository.ObterPorId(alunoDto.Id))
+            .Returns(alunoSalvo);
+
+        armazenadorDeAluno.Armazenar(alunoDto);
+
+        Assert.Equal(alunoDto.Nome, alunoSalvo.Nome);
     }
 }
 
@@ -65,10 +115,11 @@ public interface IAlunoRepository : IRepositorio<Aluno>
 
 public class AlunoDto
 {
+    public int Id { get; set; }
     public string Nome { get; set; }
     public string Cpf { get; set; }
     public string Email { get; set; }
-    public PublicoAlvo PublicoAlvo { get; set; }
+    public string PublicoAlvo { get; set; }
 }
 
 public class ArmazenadorDeAluno
@@ -89,9 +140,15 @@ public class ArmazenadorDeAluno
             .Quando(validaSeAlunoJaExiste, Resource.CpfInvalido)
             .DispararExcecaoSeExistir();
 
-        var aluno =
-            new Aluno(alunoDto.Nome, alunoDto.Cpf, alunoDto.Email, alunoDto.PublicoAlvo);
-
-        _alunoRepository.Adicionar(aluno);
+        if (alunoDto.Id > 0)
+        {
+            var aluno = new Aluno(alunoDto.Nome, alunoDto.Cpf, alunoDto.Email, PublicoAlvo.Estudante);
+            _alunoRepository.Adicionar(aluno);
+        }
+        else
+        {
+            var aluno = _alunoRepository.ObterPorId(alunoDto.Id);
+            aluno.AlterarNome(alunoDto.Nome);
+        }
     }
 }
