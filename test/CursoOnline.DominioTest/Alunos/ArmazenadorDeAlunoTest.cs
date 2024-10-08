@@ -90,6 +90,31 @@ public class ArmazenadorDeAlunoTest
         Assert.Equal(_alunoDto.Nome, alunoSalvo.Nome);
     }
 
+    /*
+     * Esse método tem a característica de validar que a regra de não alterar:
+     * CPF, email e publico alvo, esteja sendo coberta.
+     */
+    [Fact]
+    public void NaoDeveEditarDemaisInformacoesDoAluno()
+    {
+        _alunoDto.Id = 35;
+
+        var alunoSalvo = AlunoBuilder.Novo().Build();
+
+        var cpfEsperado = alunoSalvo.Cpf;
+        var emailEsperado = alunoSalvo.Email;
+        var publicoAlvoEsperado = alunoSalvo.PublicoAlvo;
+
+        _alunoRepository.Setup(cursoRepository => cursoRepository.ObterPorId(_alunoDto.Id))
+            .Returns(alunoSalvo);
+
+        _armazenadorDeAluno.Armazenar(_alunoDto);
+
+        Assert.Equal(cpfEsperado, alunoSalvo.Cpf);
+        Assert.Equal(emailEsperado, alunoSalvo.Email);
+        Assert.Equal(publicoAlvoEsperado, alunoSalvo.PublicoAlvo);
+    }
+
     [Fact]
     public void NaoDeveAdicionarQuandoForEdicao()
     {
