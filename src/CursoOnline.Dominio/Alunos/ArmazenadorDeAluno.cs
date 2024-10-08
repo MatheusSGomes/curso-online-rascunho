@@ -14,11 +14,12 @@ public class ArmazenadorDeAluno
 
     public void Armazenar(AlunoDto alunoDto)
     {
-        var alunoJaSalvo = _alunoRepository.ObterPorCpf(alunoDto.Cpf);
-        var validaSeAlunoJaExiste = alunoJaSalvo != null && alunoJaSalvo.Cpf == alunoDto.Cpf;
+        var alunoMesmoCpf = _alunoRepository.ObterPorCpf(alunoDto.Cpf);
+
+        var validaSeAlunoJaExiste = alunoMesmoCpf != null && alunoMesmoCpf.Id != alunoDto.Id;
 
         ValidadorDeRegra.Novo()
-            .Quando(validaSeAlunoJaExiste, Resource.CpfInvalido)
+            .Quando(validaSeAlunoJaExiste, Resource.CpfJaCadastrado)
             .DispararExcecaoSeExistir();
 
         if (alunoDto.Id == 0)

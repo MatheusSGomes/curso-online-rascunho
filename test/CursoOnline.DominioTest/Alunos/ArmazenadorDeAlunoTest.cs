@@ -60,7 +60,7 @@ public class ArmazenadorDeAlunoTest
         // Ao tentar cadastrar novamente é lançada a exception
         Assert.Throws<ExcecaoDeDominio>(() =>
                 _armazenadorDeAluno.Armazenar(_alunoDto))
-            .ComMensagem(Resource.CpfInvalido);
+            .ComMensagem(Resource.CpfJaCadastrado);
     }
 
     [Fact]
