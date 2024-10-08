@@ -64,6 +64,17 @@ public class ArmazenadorDeAlunoTest
     }
 
     [Fact]
+    public void NaoDeveCriarPublicoAlvoInvalido()
+    {
+        const string PUBLICO_ALVO_INVALIDO = "Invalido";
+
+        _alunoDto.PublicoAlvo = PUBLICO_ALVO_INVALIDO;
+
+        Assert.Throws<ExcecaoDeDominio>(() => _armazenadorDeAluno.Armazenar(_alunoDto))
+            .ComMensagem(Resource.PublicoAlvoInvalido);
+    }
+
+    [Fact]
     public void DeveAlterarNomeAluno()
     {
         var alunoDto = new AlunoDto

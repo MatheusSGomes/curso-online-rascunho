@@ -20,11 +20,12 @@ public class ArmazenadorDeAluno
 
         ValidadorDeRegra.Novo()
             .Quando(validaSeAlunoJaExiste, Resource.CpfJaCadastrado)
+            .Quando(!Enum.TryParse<PublicoAlvo>(alunoDto.PublicoAlvo, out var publicoAlvoConvertido), Resource.PublicoAlvoInvalido)
             .DispararExcecaoSeExistir();
 
         if (alunoDto.Id == 0)
         {
-            var aluno = new Aluno(alunoDto.Nome, alunoDto.Cpf, alunoDto.Email, PublicoAlvo.Estudante);
+            var aluno = new Aluno(alunoDto.Nome, alunoDto.Cpf, alunoDto.Email, publicoAlvoConvertido);
             _alunoRepository.Adicionar(aluno);
         }
         else
