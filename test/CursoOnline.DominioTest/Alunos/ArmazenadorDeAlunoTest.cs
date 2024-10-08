@@ -51,23 +51,15 @@ public class ArmazenadorDeAlunoTest
     [Fact]
     public void NaoDeveAdicionarAlunoQuandoCpfJaCadastrado()
     {
-        var aluno = AlunoBuilder.Novo().ComCpf("987.654.321-12").Build();
-
-        var alunoDto = new AlunoDto
-        {
-            Cpf = "987.654.321-12"
-        };
-
-        var alunoRepositoryMock = new Mock<IAlunoRepository>();
-        var armazenadorDeAluno = new ArmazenadorDeAluno(alunoRepositoryMock.Object);
+        var alunoComMesmoCpf = AlunoBuilder.Novo().ComId(321).Build();
 
         // Faço o mock, como se 'aluno' já estivesse cadastrado
-        alunoRepositoryMock.Setup(alunoRepository => alunoRepository.ObterPorCpf("987.654.321-12"))
-            .Returns(aluno);
+        _alunoRepository.Setup(alunoRepository => alunoRepository.ObterPorCpf(_alunoDto.Cpf))
+            .Returns(alunoComMesmoCpf);
 
         // Ao tentar cadastrar novamente é lançada a exception
         Assert.Throws<ExcecaoDeDominio>(() =>
-                armazenadorDeAluno.Armazenar(alunoDto))
+                _armazenadorDeAluno.Armazenar(_alunoDto))
             .ComMensagem(Resource.CpfInvalido);
     }
 
@@ -94,50 +86,5 @@ public class ArmazenadorDeAlunoTest
         armazenadorDeAluno.Armazenar(alunoDto);
 
         Assert.Equal(alunoDto.Nome, alunoSalvo.Nome);
-    }
-}
-
-public interface IAlunoRepository : IRepositorio<Aluno>
-{
-    Aluno ObterPorCpf(string cpf);
-}
-
-public class AlunoDto
-{
-    public int Id { get; set; }
-    public string Nome { get; set; }
-    public string Cpf { get; set; }
-    public string Email { get; set; }
-    public string PublicoAlvo { get; set; }
-}
-
-public class ArmazenadorDeAluno
-{
-    private readonly IAlunoRepository _alunoRepository;
-
-    public ArmazenadorDeAluno(IAlunoRepository alunoRepository)
-    {
-        _alunoRepository = alunoRepository;
-    }
-
-    public void Armazenar(AlunoDto alunoDto)
-    {
-        var alunoJaSalvo = _alunoRepository.ObterPorCpf(alunoDto.Cpf);
-        var validaSeAlunoJaExiste = alunoJaSalvo != null && alunoJaSalvo.Cpf == alunoDto.Cpf;
-
-        ValidadorDeRegra.Novo()
-            .Quando(validaSeAlunoJaExiste, Resource.CpfInvalido)
-            .DispararExcecaoSeExistir();
-
-        if (alunoDto.Id == 0)
-        {
-            var aluno = new Aluno(alunoDto.Nome, alunoDto.Cpf, alunoDto.Email, PublicoAlvo.Estudante);
-            _alunoRepository.Adicionar(aluno);
-        }
-        else
-        {
-            var aluno = _alunoRepository.ObterPorId(alunoDto.Id);
-            aluno.AlterarNome(alunoDto.Nome);
-        }
     }
 }

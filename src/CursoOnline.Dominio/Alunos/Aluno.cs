@@ -4,7 +4,7 @@ using CursoOnline.Dominio.Cursos;
 
 namespace CursoOnline.Dominio.Alunos;
 
-public class Aluno
+public class Aluno : Entidade
 {
     public string Nome { get; protected set; }
     public string Cpf { get; protected set; }

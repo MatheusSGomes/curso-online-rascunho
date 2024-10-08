@@ -8,6 +8,8 @@ namespace CursoOnline.DominioTest._Builders;
 public class AlunoBuilder
 {
     private readonly Faker _faker  = new Faker();
+
+    private int _id;
     private string _nome;
     private string _cpf;
     private string _email;
@@ -44,13 +46,22 @@ public class AlunoBuilder
         return this;
     }
 
+    public AlunoBuilder ComId(int id)
+    {
+        _id = id;
+        return this;
+    }
+
     public Aluno Build()
     {
-        var aluno = new Aluno(
-            _nome,
-            _cpf,
-            _email,
-            _publicoAlvo);
+        var aluno = new Aluno( _nome, _cpf, _email, _publicoAlvo);
+
+        if (_id <= 0)
+            return aluno;
+
+        // Reflection
+        var propertyInfo = aluno.GetType().GetProperty("Id");
+        propertyInfo.SetValue(aluno, Convert.ChangeType(_id, propertyInfo.PropertyType), null);
 
         return aluno;
     }
