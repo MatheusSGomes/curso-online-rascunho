@@ -75,27 +75,18 @@ public class ArmazenadorDeAlunoTest
     }
 
     [Fact]
-    public void DeveAlterarNomeAluno()
+    public void DeveEditarAluno()
     {
-        var alunoDto = new AlunoDto
-        {
-            Id = 123,
-            Nome = "Matheus",
-            Cpf = "987.654.321-12",
-            Email = "matheus@gmail.com",
-            PublicoAlvo = PublicoAlvo.Estudante.ToString()
-        };
+        _alunoDto.Id = 35;
+        _alunoDto.Nome = _faker.Person.FullName;
 
         var alunoSalvo = AlunoBuilder.Novo().Build();
 
-        var alunoRepositoryMock = new Mock<IAlunoRepository>();
-        var armazenadorDeAluno = new ArmazenadorDeAluno(alunoRepositoryMock.Object);
-
-        alunoRepositoryMock.Setup(cursoRepository => cursoRepository.ObterPorId(alunoDto.Id))
+        _alunoRepository.Setup(cursoRepository => cursoRepository.ObterPorId(_alunoDto.Id))
             .Returns(alunoSalvo);
 
-        armazenadorDeAluno.Armazenar(alunoDto);
+        _armazenadorDeAluno.Armazenar(_alunoDto);
 
-        Assert.Equal(alunoDto.Nome, alunoSalvo.Nome);
+        Assert.Equal(_alunoDto.Nome, alunoSalvo.Nome);
     }
 }
