@@ -89,4 +89,17 @@ public class ArmazenadorDeAlunoTest
 
         Assert.Equal(_alunoDto.Nome, alunoSalvo.Nome);
     }
+
+    [Fact]
+    public void NaoDeveAdicionarQuandoForEdicao()
+    {
+        _alunoDto.Id = 35;
+        var alunoJaSalvo = AlunoBuilder.Novo().Build();
+
+        _alunoRepository.Setup(alunoRepository => alunoRepository.ObterPorId(_alunoDto.Id)).Returns(alunoJaSalvo);
+
+        _armazenadorDeAluno.Armazenar(_alunoDto);
+
+        _alunoRepository.Verify(alunoRepository => alunoRepository.Adicionar(It.IsAny<Aluno>()), Times.Never());
+    }
 }
