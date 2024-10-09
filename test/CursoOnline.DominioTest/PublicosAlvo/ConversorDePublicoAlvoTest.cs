@@ -1,12 +1,13 @@
 using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio.PublicosAlvo;
 using CursoOnline.DominioTest._Utils;
 
 namespace CursoOnline.DominioTest.PublicosAlvo;
 
 public class ConversorDePublicoAlvoTest
 {
-    private ConversorDePublicoAlvo _conversor = new();
+    private readonly ConversorDePublicoAlvo _conversor = new();
 
     [Theory]
     [InlineData(PublicoAlvo.Estudante, "Estudante")]
@@ -29,17 +30,4 @@ public class ConversorDePublicoAlvoTest
             .ComMensagem(Resource.PublicoAlvoInvalido);
     }
 
-}
-
-public class ConversorDePublicoAlvo
-{
-    public PublicoAlvo Converter(string publicoAlvo)
-    {
-        ValidadorDeRegra.Novo()
-            .Quando(!Enum.TryParse<PublicoAlvo>(publicoAlvo, out var publicoAlvoConvertido),
-                Resource.PublicoAlvoInvalido)
-            .DispararExcecaoSeExistir();
-
-        return publicoAlvoConvertido;
-    }
 }
