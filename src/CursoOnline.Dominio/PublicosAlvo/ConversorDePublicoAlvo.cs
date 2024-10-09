@@ -3,7 +3,7 @@ using CursoOnline.Dominio.Cursos;
 
 namespace CursoOnline.Dominio.PublicosAlvo;
 
-public class ConversorDePublicoAlvo
+public class ConversorDePublicoAlvo : IConversorDePublicoAlvo
 {
     public PublicoAlvo Converter(string publicoAlvo)
     {

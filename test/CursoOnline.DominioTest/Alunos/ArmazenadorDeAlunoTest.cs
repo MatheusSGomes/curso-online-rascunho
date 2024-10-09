@@ -3,6 +3,7 @@ using Bogus.Extensions.Brazil;
 using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio.PublicosAlvo;
 using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._Utils;
 using Moq;
@@ -15,6 +16,7 @@ public class ArmazenadorDeAlunoTest
     private readonly AlunoDto _alunoDto;
     private readonly Mock<IAlunoRepository> _alunoRepository;
     private readonly ArmazenadorDeAluno _armazenadorDeAluno;
+    private readonly Mock<IConversorDePublicoAlvo> _conversorDePublicoAlvo;
 
     public ArmazenadorDeAlunoTest()
     {
@@ -29,7 +31,8 @@ public class ArmazenadorDeAlunoTest
         };
 
         _alunoRepository = new Mock<IAlunoRepository>();
-        _armazenadorDeAluno = new ArmazenadorDeAluno(_alunoRepository.Object);
+        _conversorDePublicoAlvo = new Mock<IConversorDePublicoAlvo>();
+        _armazenadorDeAluno = new ArmazenadorDeAluno(_alunoRepository.Object, _conversorDePublicoAlvo.Object);
     }
 
     [Fact]
@@ -61,17 +64,6 @@ public class ArmazenadorDeAlunoTest
         Assert.Throws<ExcecaoDeDominio>(() =>
                 _armazenadorDeAluno.Armazenar(_alunoDto))
             .ComMensagem(Resource.CpfJaCadastrado);
-    }
-
-    [Fact]
-    public void NaoDeveCriarPublicoAlvoInvalido()
-    {
-        const string PUBLICO_ALVO_INVALIDO = "Invalido";
-
-        _alunoDto.PublicoAlvo = PUBLICO_ALVO_INVALIDO;
-
-        Assert.Throws<ExcecaoDeDominio>(() => _armazenadorDeAluno.Armazenar(_alunoDto))
-            .ComMensagem(Resource.PublicoAlvoInvalido);
     }
 
     [Fact]
