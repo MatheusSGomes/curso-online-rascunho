@@ -4,13 +4,16 @@ namespace CursoOnline.DominioTest.PublicosAlvo;
 
 public class ConversorDePublicoAlvoTest
 {
-    [Fact]
-    public void DeveConverterPublicoAlvo()
+    [Theory]
+    [InlineData(PublicoAlvo.Estudante, "Estudante")]
+    [InlineData(PublicoAlvo.Universitario, "Universitario")]
+    [InlineData(PublicoAlvo.Empregado, "Empregado")]
+    [InlineData(PublicoAlvo.Empreendedor, "Empreendedor")]
+    public void DeveConverterPublicoAlvo(PublicoAlvo publicoAlvoEsperado, string publicoAlvo)
     {
-        var publicoAlvoEsperado = PublicoAlvo.Empregado;
         var conversor = new ConversorDePublicoAlvo();
-        var publicoAlvoConvertido = conversor.Converter("Empregado");
-        
+        var publicoAlvoConvertido = conversor.Converter(publicoAlvo);
+
         Assert.Equal(publicoAlvoEsperado, publicoAlvoConvertido);
     }
 }
