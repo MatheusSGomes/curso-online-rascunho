@@ -6,10 +6,10 @@ namespace CursoOnline.Dominio.Alunos;
 
 public class Aluno : Entidade
 {
-    public string Nome { get; protected set; }
-    public string Cpf { get; protected set; }
-    public string Email { get; protected set; }
-    public PublicoAlvo PublicoAlvo { get; protected set; }
+    public string Nome { get; set; }
+    public string Cpf { get; set; }
+    public string Email { get; set; }
+    public PublicoAlvo PublicoAlvo { get; set; }
     
     private readonly Regex _emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
     private readonly Regex _cpfRegex = new Regex(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
