@@ -36,4 +36,11 @@ public class AlunoController : Controller
 
         return NotFound("Nenhum aluno encontrado");
     }
+
+    [HttpPost]
+    public IActionResult Salvar(AlunoDto model)
+    {
+        _armazenadorDeAluno.Armazenar(model);
+        return Ok();
+    }
 }
