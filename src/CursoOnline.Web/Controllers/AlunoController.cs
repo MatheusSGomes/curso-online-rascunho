@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CursoOnline.Web.Controllers;
 
+[ApiController]
+[Route("[controller]")]
 public class AlunoController : Controller
 {
     private readonly ArmazenadorDeAluno _armazenadorDeAluno;
