@@ -22,6 +22,7 @@ public static class StartupIoc
         services.AddScoped(typeof(IAlunoRepository), typeof(AlunoRepositorio));
         services.AddScoped(typeof(IConversorDePublicoAlvo), typeof(ConversorDePublicoAlvo));
         services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+        services.AddScoped<ArmazenadorDeAluno>();
         services.AddScoped<ArmazenadorDeCurso>();
     }
 }
