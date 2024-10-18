@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using CursoOnline.Web.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CursoOnline.Web.Controllers;
 

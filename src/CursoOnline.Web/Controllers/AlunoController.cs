@@ -1,6 +1,5 @@
 using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Alunos;
-using CursoOnline.Web.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CursoOnline.Web.Controllers;
