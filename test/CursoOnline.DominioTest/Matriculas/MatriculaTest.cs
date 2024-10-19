@@ -1,6 +1,8 @@
+using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
 using CursoOnline.DominioTest._Builders;
+using CursoOnline.DominioTest._Utils;
 using ExpectedObjects;
 
 namespace CursoOnline.DominioTest.Matriculas;
@@ -21,6 +23,17 @@ public class MatriculaTest
 
         matriculaEsperada.ToExpectedObject().ShouldMatch(matricula);
     }
+
+    [Fact]
+    public void NaoDeveCriarMatriculaSemAluno()
+    {
+        // O aluno inválido será medido com "null"
+        Aluno alunoInvalido = null;
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                MatriculaBuilder.Novo().ComAluno(alunoInvalido).Build())
+            .ComMensagem(Resource.AlunoInvalido);
+    }
 }
 
 public class Matricula
@@ -31,6 +44,10 @@ public class Matricula
 
     public Matricula(Aluno aluno, Curso curso, decimal valorPago)
     {
+        ValidadorDeRegra.Novo()
+            .Quando(aluno == null, Resource.AlunoInvalido)
+            .DispararExcecaoSeExistir();
+
         Aluno = aluno;
         Curso = curso;
         ValorPago = valorPago;

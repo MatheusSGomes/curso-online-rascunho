@@ -9,5 +9,6 @@ public static class Resource
     public static string CargaHorariaInvalida = "Carga horária inválida";
     public static string ValorInvalido = "Valor inválido";
     public static string NomeDoCursoJaExiste = "Nome do curso já consta no banco de dados";
-    public static string PublicoAlvoInvalido = "Público Alvo Inválido";
+    public static string PublicoAlvoInvalido = "Público alvo inválido";
+    public static string AlunoInvalido = "Aluno inválido";
 }
