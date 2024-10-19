@@ -69,6 +69,17 @@ public class MatriculaTest
                 MatriculaBuilder.Novo().ComCurso(curso).ComValorPago(valorPagoMaiorQueCurso).Build())
             .ComMensagem(Resource.ValorPagoMaiorQueValorCurso);
     }
+
+    [Fact]
+    public void DeveIndicarQueHouveDescontoNaMatricula()
+    {
+        var curso = CursoBuilder.Novo().ComValor(1000).Build();
+        var valorPagoComDesconto = curso.Valor - 100;
+
+        var matricula = MatriculaBuilder.Novo().ComCurso(curso).ComValorPago(valorPagoComDesconto).Build();
+
+        Assert.True(matricula.TemDesconto);
+    }
 }
 
 public class Matricula
@@ -76,6 +87,7 @@ public class Matricula
     public Aluno Aluno { get; private set; }
     public Curso Curso { get; private set; }
     public decimal ValorPago { get; private set; }
+    public bool TemDesconto { get; private set; }
 
     public Matricula(Aluno aluno, Curso curso, decimal valorPago)
     {
@@ -83,12 +95,13 @@ public class Matricula
             .Quando(aluno == null, Resource.AlunoInvalido)
             .Quando(curso == null, Resource.CursoInvalido)
             .Quando(valorPago < 1, Resource.ValorInvalido)
-            .Quando(valorPago > curso.Valor || valorPago < curso.Valor,
+            .Quando(valorPago > curso.Valor,
                 Resource.ValorPagoMaiorQueValorCurso)
             .DispararExcecaoSeExistir();
 
         Aluno = aluno;
         Curso = curso;
         ValorPago = valorPago;
+        TemDesconto = valorPago < Curso.Valor;
     }
 }
