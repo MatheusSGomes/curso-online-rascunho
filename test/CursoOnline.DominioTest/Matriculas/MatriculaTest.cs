@@ -1,23 +1,25 @@
 using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
 using CursoOnline.DominioTest._Builders;
+using ExpectedObjects;
 
 namespace CursoOnline.DominioTest.Matriculas;
 
-public class MatriculasTest
+public class MatriculaTest
 {
     [Fact]
     public void DeveCriarMatricula()
     {
-        var aluno = AlunoBuilder.Novo().Build();
-        var curso = CursoBuilder.Novo().Build();
-        const decimal valorDaMatricula = 1000m;
+        var matriculaEsperada = new
+        {
+            Aluno = AlunoBuilder.Novo().Build(),
+            Curso = CursoBuilder.Novo().Build(),
+            ValorDaMatricula = 1000m
+        };
 
-        var matricula = new Matricula(aluno, curso, valorDaMatricula);
+        var matricula = new Matricula(matriculaEsperada.Aluno, matriculaEsperada.Curso, matriculaEsperada.ValorDaMatricula);
 
-        Assert.Equal(aluno, matricula.Aluno);
-        Assert.Equal(curso, matricula.Curso);
-        Assert.Equal(valorDaMatricula, matricula.ValorDaMatricula);
+        matriculaEsperada.ToExpectedObject().ShouldMatch(matricula);
     }
 }
 
