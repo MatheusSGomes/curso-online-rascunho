@@ -34,18 +34,29 @@ public class MatriculaTest
                 MatriculaBuilder.Novo().ComAluno(alunoInvalido).Build())
             .ComMensagem(Resource.AlunoInvalido);
     }
+
+    [Fact]
+    public void NaoDeveCriarMatriculaSemCurso()
+    {
+        Curso cursoInvalido = null;
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                MatriculaBuilder.Novo().ComCurso(cursoInvalido).Build())
+            .ComMensagem(Resource.CursoInvalido);
+    }
 }
 
 public class Matricula
 {
-    public Aluno Aluno { get; set; }
-    public Curso Curso { get; set; }
-    public decimal ValorPago { get; set; }
+    public Aluno Aluno { get; private set; }
+    public Curso Curso { get; private set; }
+    public decimal ValorPago { get; private set; }
 
     public Matricula(Aluno aluno, Curso curso, decimal valorPago)
     {
         ValidadorDeRegra.Novo()
             .Quando(aluno == null, Resource.AlunoInvalido)
+            .Quando(curso == null, Resource.CursoInvalido)
             .DispararExcecaoSeExistir();
 
         Aluno = aluno;
