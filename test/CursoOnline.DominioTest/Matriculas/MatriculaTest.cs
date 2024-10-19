@@ -44,6 +44,17 @@ public class MatriculaTest
                 MatriculaBuilder.Novo().ComCurso(cursoInvalido).Build())
             .ComMensagem(Resource.CursoInvalido);
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-1000)]
+    public void NaoDeveCriarMatriculaComValorPagoInvalido(decimal valorPagoInvalido)
+    {
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                MatriculaBuilder.Novo().ComValorPago(valorPagoInvalido).Build())
+            .ComMensagem(Resource.ValorInvalido);
+    }
 }
 
 public class Matricula
@@ -57,6 +68,7 @@ public class Matricula
         ValidadorDeRegra.Novo()
             .Quando(aluno == null, Resource.AlunoInvalido)
             .Quando(curso == null, Resource.CursoInvalido)
+            .Quando(valorPago < 1, Resource.ValorInvalido)
             .DispararExcecaoSeExistir();
 
         Aluno = aluno;
