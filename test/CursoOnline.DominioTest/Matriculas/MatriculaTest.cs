@@ -14,10 +14,10 @@ public class MatriculaTest
         {
             Aluno = AlunoBuilder.Novo().Build(),
             Curso = CursoBuilder.Novo().Build(),
-            ValorDaMatricula = 1000m
+            ValorPago = 1000m
         };
 
-        var matricula = new Matricula(matriculaEsperada.Aluno, matriculaEsperada.Curso, matriculaEsperada.ValorDaMatricula);
+        var matricula = new Matricula(matriculaEsperada.Aluno, matriculaEsperada.Curso, matriculaEsperada.ValorPago);
 
         matriculaEsperada.ToExpectedObject().ShouldMatch(matricula);
     }
@@ -27,12 +27,12 @@ public class Matricula
 {
     public Aluno Aluno { get; set; }
     public Curso Curso { get; set; }
-    public decimal ValorDaMatricula { get; set; }
+    public decimal ValorPago { get; set; }
 
-    public Matricula(Aluno aluno, Curso curso, decimal valorDaMatricula)
+    public Matricula(Aluno aluno, Curso curso, decimal valorPago)
     {
         Aluno = aluno;
         Curso = curso;
-        ValorDaMatricula = valorDaMatricula;
+        ValorPago = valorPago;
     }
 }
