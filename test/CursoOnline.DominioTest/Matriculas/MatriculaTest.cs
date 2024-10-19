@@ -2,6 +2,7 @@ using Bogus;
 using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio.Matriculas;
 using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._Utils;
 using ExpectedObjects;
@@ -41,7 +42,7 @@ public class MatriculaTest
     [Fact]
     public void NaoDeveCriarMatriculaSemCurso()
     {
-        Curso cursoInvalido = null;
+        Curso cursoInvalido = null!;
 
         Assert.Throws<ExcecaoDeDominio>(() =>
                 MatriculaBuilder.Novo().ComCurso(cursoInvalido).Build())
@@ -79,29 +80,5 @@ public class MatriculaTest
         var matricula = MatriculaBuilder.Novo().ComCurso(curso).ComValorPago(valorPagoComDesconto).Build();
 
         Assert.True(matricula.TemDesconto);
-    }
-}
-
-public class Matricula
-{
-    public Aluno Aluno { get; private set; }
-    public Curso Curso { get; private set; }
-    public decimal ValorPago { get; private set; }
-    public bool TemDesconto { get; private set; }
-
-    public Matricula(Aluno aluno, Curso curso, decimal valorPago)
-    {
-        ValidadorDeRegra.Novo()
-            .Quando(aluno == null, Resource.AlunoInvalido)
-            .Quando(curso == null, Resource.CursoInvalido)
-            .Quando(valorPago < 1, Resource.ValorInvalido)
-            .Quando(valorPago > curso.Valor,
-                Resource.ValorPagoMaiorQueValorCurso)
-            .DispararExcecaoSeExistir();
-
-        Aluno = aluno;
-        Curso = curso;
-        ValorPago = valorPago;
-        TemDesconto = valorPago < Curso.Valor;
     }
 }

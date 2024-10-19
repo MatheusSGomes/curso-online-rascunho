@@ -1,5 +1,6 @@
 using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio.Matriculas;
 using CursoOnline.DominioTest.Matriculas;
 
 namespace CursoOnline.DominioTest._Builders;
