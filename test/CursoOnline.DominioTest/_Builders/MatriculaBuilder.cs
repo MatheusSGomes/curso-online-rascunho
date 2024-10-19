@@ -12,12 +12,15 @@ public class MatriculaBuilder
 
     public static MatriculaBuilder Novo()
     {
+        var aluno = AlunoBuilder.Novo().Build();
+        var curso = CursoBuilder.Novo().Build();
+
         return new MatriculaBuilder
         {
             // Implemento valores default (poderiam ser fakes)
-            _aluno = AlunoBuilder.Novo().Build(),
-            _curso = CursoBuilder.Novo().Build(),
-            _valorPago = 1000m
+            _aluno = aluno,
+            _curso = curso,
+            _valorPago = curso.Valor
         };
     }
 

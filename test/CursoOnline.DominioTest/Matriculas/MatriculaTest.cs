@@ -1,3 +1,4 @@
+using Bogus;
 using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Alunos;
 using CursoOnline.Dominio.Cursos;
@@ -12,11 +13,13 @@ public class MatriculaTest
     [Fact]
     public void DeveCriarMatricula()
     {
+        var faker = new Faker();
+
         var matriculaEsperada = new
         {
             Aluno = AlunoBuilder.Novo().Build(),
             Curso = CursoBuilder.Novo().Build(),
-            ValorPago = 1000m
+            ValorPago = faker.Finance.Amount()
         };
 
         var matricula = new Matricula(matriculaEsperada.Aluno, matriculaEsperada.Curso, matriculaEsperada.ValorPago);
@@ -55,6 +58,17 @@ public class MatriculaTest
                 MatriculaBuilder.Novo().ComValorPago(valorPagoInvalido).Build())
             .ComMensagem(Resource.ValorInvalido);
     }
+
+    [Fact]
+    public void NaoDeveCriarMatriculaComValorPagoMaiorQueValorDoCurso()
+    {
+        var curso = CursoBuilder.Novo().ComValor(1000).Build();
+        decimal valorPagoMaiorQueCurso = curso.Valor + 1;
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                MatriculaBuilder.Novo().ComCurso(curso).ComValorPago(valorPagoMaiorQueCurso).Build())
+            .ComMensagem(Resource.ValorPagoMaiorQueValorCurso);
+    }
 }
 
 public class Matricula
@@ -69,6 +83,8 @@ public class Matricula
             .Quando(aluno == null, Resource.AlunoInvalido)
             .Quando(curso == null, Resource.CursoInvalido)
             .Quando(valorPago < 1, Resource.ValorInvalido)
+            .Quando(valorPago > curso.Valor || valorPago < curso.Valor,
+                Resource.ValorPagoMaiorQueValorCurso)
             .DispararExcecaoSeExistir();
 
         Aluno = aluno;

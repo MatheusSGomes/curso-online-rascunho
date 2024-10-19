@@ -12,4 +12,6 @@ public static class Resource
     public static string PublicoAlvoInvalido = "Público alvo inválido";
     public static string AlunoInvalido = "Aluno inválido";
     public static string CursoInvalido = "Curso inválido";
+    public static string ValorPagoMaiorQueValorCurso
+        = "Valor pago na matrícula não pode ser maior do que o valor do curso";
 }
