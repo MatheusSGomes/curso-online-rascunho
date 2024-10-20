@@ -19,6 +19,7 @@ public class Matricula
             .Quando(valorPago < 1, Resource.ValorInvalido)
             .Quando(curso != null && valorPago > curso.Valor,
                 Resource.ValorPagoMaiorQueValorCurso)
+            .Quando(aluno != null && curso != null && aluno.PublicoAlvo != curso.PublicoAlvo, Resource.PublicosAlvoDiferentes)
             .DispararExcecaoSeExistir();
 
         Aluno = aluno;

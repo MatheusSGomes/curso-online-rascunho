@@ -10,34 +10,17 @@ namespace CursoOnline.DominioTest.Matriculas;
 // Classe corresponde ao Domain Service (Serviço de domínio)
 public class CriacaoDaMatriculaTest
 {
-    [Fact]
-    public void NaoDevePublicoAlvoDeAlunoECursoSeremDiferentes()
+    private readonly Mock<ICursoRepositorio> _cursoRepositorio;
+    private readonly Mock<IAlunoRepository> _alunoRepositorio;
+    private readonly CriacaoDaMatricula _criacaoDaMatricula;
+
+    public CriacaoDaMatriculaTest()
     {
-        var cursoRepositorio = new Mock<ICursoRepositorio>();
-        var alunoRepositorio = new Mock<IAlunoRepository>();
-
-        var curso = CursoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Empregado).Build();
-        var aluno = AlunoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Estudante).Build();
-
-        // Sempre que buscar pelo Id no repositório, deve retornar o curso criado.
-        cursoRepositorio.Setup(repo => repo.ObterPorId(curso.Id)).Returns(curso);
-        alunoRepositorio.Setup(repo => repo.ObterPorId(aluno.Id)).Returns(aluno);
-
-        var matriculaDto = new MatriculaDto
-        {
-            AlunoId = aluno.Id,
-            CursoId = curso.Id
-        };
+        _cursoRepositorio = new Mock<ICursoRepositorio>();
+        _alunoRepositorio = new Mock<IAlunoRepository>();
 
         // Instancia a Domain Service
-        var criacaoDaMatricula = new CriacaoDaMatricula(alunoRepositorio.Object, cursoRepositorio.Object);
-
-        // Quando criar a matricula deve retornar um erro
-        // Os 2 públicos alvo não podem ser iguais
-        // criacaoDaMatricula.Criar(matriculaDto);
-        Assert.Throws<ExcecaoDeDominio>(() =>
-                criacaoDaMatricula.Criar(matriculaDto))
-            .ComMensagem(Resource.PublicosAlvoDiferentes);
+        _criacaoDaMatricula = new CriacaoDaMatricula(_alunoRepositorio.Object, _cursoRepositorio.Object);
     }
 }
 

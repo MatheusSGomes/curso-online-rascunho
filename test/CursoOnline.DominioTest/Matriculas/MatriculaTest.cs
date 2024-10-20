@@ -18,8 +18,8 @@ public class MatriculaTest
 
         var matriculaEsperada = new
         {
-            Aluno = AlunoBuilder.Novo().Build(),
-            Curso = CursoBuilder.Novo().Build(),
+            Aluno = AlunoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Empreendedor).Build(),
+            Curso = CursoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Empreendedor).Build(),
             ValorPago = faker.Finance.Amount()
         };
 
@@ -80,5 +80,22 @@ public class MatriculaTest
         var matricula = MatriculaBuilder.Novo().ComCurso(curso).ComValorPago(valorPagoComDesconto).Build();
 
         Assert.True(matricula.TemDesconto);
+    }
+
+    [Fact]
+    public void NaoDevePublicoAlvoDeAlunoECursoSeremDiferentes()
+    {
+        var curso = CursoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Empregado).Build();
+        var aluno = AlunoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Estudante).Build();
+
+        var matriculaDto = new MatriculaDto
+        {
+            AlunoId = aluno.Id,
+            CursoId = curso.Id
+        };
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                MatriculaBuilder.Novo().ComAluno(aluno).ComCurso(curso).Build())
+            .ComMensagem(Resource.PublicosAlvoDiferentes);
     }
 }

@@ -13,8 +13,8 @@ public class MatriculaBuilder
 
     public static MatriculaBuilder Novo()
     {
-        var aluno = AlunoBuilder.Novo().Build();
-        var curso = CursoBuilder.Novo().Build();
+        var aluno = AlunoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Estudante).Build();
+        var curso = CursoBuilder.Novo().ComPublicoAlvo(PublicoAlvo.Estudante).Build();
 
         return new MatriculaBuilder
         {
