@@ -52,6 +52,12 @@ public class AlunoBuilder
         return this;
     }
 
+    public AlunoBuilder ComPublicoAlvo(PublicoAlvo publicoAlvo)
+    {
+        _publicoAlvo = publicoAlvo;
+        return this;
+    }
+
     public Aluno Build()
     {
         var aluno = new Aluno( _nome, _cpf, _email, _publicoAlvo);
