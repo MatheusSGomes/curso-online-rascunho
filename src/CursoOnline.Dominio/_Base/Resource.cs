@@ -15,4 +15,5 @@ public static class Resource
     public static string ValorPagoMaiorQueValorCurso
         = "Valor pago na matrícula não pode ser maior do que o valor do curso";
     public static string PublicosAlvoDiferentes = "Público alvo do aluno e curso são diferentes";
+    public static string CursoNaoEncontrado = "Curso não encontrado";
 }
