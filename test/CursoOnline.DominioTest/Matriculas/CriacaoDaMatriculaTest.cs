@@ -38,11 +38,24 @@ public class CriacaoDaMatriculaTest
     {
         Curso cursoInvalido = null!;
 
-        _cursoRepositorio.Setup(repo => repo.ObterPorId(It.IsAny<int>())).Returns(cursoInvalido);
+        _cursoRepositorio.Setup(repo => repo.ObterPorId(_matriculaDto.CursoId)).Returns(cursoInvalido);
 
         Assert.Throws<ExcecaoDeDominio>(() =>
                 _criacaoDaMatricula.Criar(_matriculaDto))
             .ComMensagem(Resource.CursoNaoEncontrado);
+    }
+
+    [Fact]
+    // Caso aluno não exista no banco, deve retornar uma exceção
+    public void DeveNotificarQuandoAlunoNaoForEncontrado()
+    {
+        Aluno alunoInvalido = null!;
+
+        _alunoRepositorio.Setup(repo => repo.ObterPorId(_matriculaDto.AlunoId)).Returns(alunoInvalido);
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                _criacaoDaMatricula.Criar(_matriculaDto))
+            .ComMensagem(Resource.AlunoNaoEncontrado);
     }
 }
 
@@ -64,6 +77,7 @@ public class CriacaoDaMatricula
 
         ValidadorDeRegra.Novo()
             .Quando(curso == null, Resource.CursoNaoEncontrado)
+            .Quando(aluno == null, Resource.AlunoNaoEncontrado)
             .DispararExcecaoSeExistir();
     }
 }
