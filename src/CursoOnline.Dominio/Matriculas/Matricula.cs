@@ -10,7 +10,8 @@ public class Matricula
     public Curso Curso { get; private set; }
     public decimal ValorPago { get; private set; }
     public bool TemDesconto { get; private set; }
-    public double NotaDoAluno { get; set; }
+    public double NotaDoAluno { get; private set; }
+    public bool CursoConcluido { get; private set; }
 
     public Matricula(Aluno aluno, Curso curso, decimal valorPago)
     {
@@ -36,5 +37,6 @@ public class Matricula
             .DispararExcecaoSeExistir();
 
         NotaDoAluno = notaDoAluno;
+        this.CursoConcluido = true;
     }
 }

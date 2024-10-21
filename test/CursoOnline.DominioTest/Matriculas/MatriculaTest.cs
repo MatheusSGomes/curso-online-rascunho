@@ -121,4 +121,15 @@ public class MatriculaTest
                 matricula.InformarNota(notaDoAlunoInvalida))
             .ComMensagem(Resource.NotaDoAlunoInvalida);
     }
+
+    [Fact]
+    public void DeveIndicarQueCursoFoiConcluido()
+    {
+        double notaDoAlunoEsperada = 9.5;
+
+        var matricula = MatriculaBuilder.Novo().Build();
+        matricula.InformarNota(notaDoAlunoEsperada);
+
+        Assert.True(matricula.CursoConcluido);
+    }
 }
