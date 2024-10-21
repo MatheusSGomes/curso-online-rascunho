@@ -105,9 +105,20 @@ public class MatriculaTest
         double notaDoAlunoEsperada = 9.5;
 
         var matricula = MatriculaBuilder.Novo().Build();
-
         matricula.InformarNota(notaDoAlunoEsperada);
 
         Assert.Equal(notaDoAlunoEsperada, matricula.NotaDoAluno);
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(-11)]
+    public void NaoDeveInformarComNotaInvalida(double notaDoAlunoInvalida)
+    {
+        var matricula = MatriculaBuilder.Novo().Build();
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                matricula.InformarNota(notaDoAlunoInvalida))
+            .ComMensagem(Resource.NotaDoAlunoInvalida);
     }
 }

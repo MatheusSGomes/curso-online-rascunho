@@ -17,4 +17,5 @@ public static class Resource
     public static string PublicosAlvoDiferentes = "Público alvo do aluno e curso são diferentes";
     public static string CursoNaoEncontrado = "Curso não encontrado";
     public static string AlunoNaoEncontrado = "Aluno não encontrado";
+    public static string NotaDoAlunoInvalida = "Nota do aluno inválida";
 }

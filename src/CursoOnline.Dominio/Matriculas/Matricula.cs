@@ -31,6 +31,10 @@ public class Matricula
 
     public void InformarNota(double notaDoAluno)
     {
+        ValidadorDeRegra.Novo()
+            .Quando(notaDoAluno < 0 || notaDoAluno > 10, Resource.NotaDoAlunoInvalida)
+            .DispararExcecaoSeExistir();
+
         NotaDoAluno = notaDoAluno;
     }
 }
