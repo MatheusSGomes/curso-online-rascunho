@@ -10,6 +10,7 @@ public class Matricula
     public Curso Curso { get; private set; }
     public decimal ValorPago { get; private set; }
     public bool TemDesconto { get; private set; }
+    public double NotaDoAluno { get; set; }
 
     public Matricula(Aluno aluno, Curso curso, decimal valorPago)
     {
@@ -26,5 +27,10 @@ public class Matricula
         Curso = curso;
         ValorPago = valorPago;
         TemDesconto = valorPago < Curso.Valor;
+    }
+
+    public void InformarNota(double notaDoAluno)
+    {
+        NotaDoAluno = notaDoAluno;
     }
 }

@@ -98,4 +98,16 @@ public class MatriculaTest
                 MatriculaBuilder.Novo().ComAluno(aluno).ComCurso(curso).Build())
             .ComMensagem(Resource.PublicosAlvoDiferentes);
     }
+
+    [Fact]
+    public void DeveInformarANotaDoAlunoParaMatricula()
+    {
+        double notaDoAlunoEsperada = 9.5;
+
+        var matricula = MatriculaBuilder.Novo().Build();
+
+        matricula.InformarNota(notaDoAlunoEsperada);
+
+        Assert.Equal(notaDoAlunoEsperada, matricula.NotaDoAluno);
+    }
 }
