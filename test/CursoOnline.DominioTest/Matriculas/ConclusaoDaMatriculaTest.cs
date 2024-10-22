@@ -37,7 +37,7 @@ public class ConclusaoDaMatriculaTest
         var matriculaRepositorio = new Mock<IMatriculaRepositorio>();
         var conclusaoMatricula = new ConclusaoDaMatricula(matriculaRepositorio.Object);
 
-        Matricula matriculaInvalida = null;
+        Matricula matriculaInvalida = null!;
         const int matriculaIdInvalida = 1;
 
         matriculaRepositorio.Setup(r => r.ObterPorId(It.IsAny<int>())).Returns(matriculaInvalida);
@@ -46,26 +46,5 @@ public class ConclusaoDaMatriculaTest
                 conclusaoMatricula.Concluir(matriculaIdInvalida, notaDoAluno))
             .ComMensagem(Resource.MatriculaNaoEncontrada);
 
-    }
-}
-
-public class ConclusaoDaMatricula
-{
-    private readonly IMatriculaRepositorio _matriculaRepositorio;
-
-    public ConclusaoDaMatricula(IMatriculaRepositorio matriculaRepositorio)
-    {
-        _matriculaRepositorio = matriculaRepositorio;
-    }
-
-    public void Concluir(int matriculaId, double notaDoAluno)
-    {
-        var matricula = _matriculaRepositorio.ObterPorId(matriculaId);
-
-        ValidadorDeRegra.Novo()
-            .Quando(matricula == null, Resource.MatriculaNaoEncontrada)
-            .DispararExcecaoSeExistir();
-
-        matricula.InformarNota(notaDoAluno);
     }
 }
