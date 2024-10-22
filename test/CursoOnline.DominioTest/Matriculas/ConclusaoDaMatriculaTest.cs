@@ -1,5 +1,7 @@
+using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Matriculas;
 using CursoOnline.DominioTest._Builders;
+using CursoOnline.DominioTest._Utils;
 using Moq;
 
 namespace CursoOnline.DominioTest.Matriculas;
@@ -27,6 +29,24 @@ public class ConclusaoDaMatriculaTest
         // Verificar se a matricula teve uma nota
         Assert.Equal(notaDoAlunoEsperada, matricula.NotaDoAluno);
     }
+
+    [Fact]
+    public void DeveNotificarQuandoMatriculaNaoEncontrada()
+    {
+        var notaDoAluno = 8;
+        var matriculaRepositorio = new Mock<IMatriculaRepositorio>();
+        var conclusaoMatricula = new ConclusaoDaMatricula(matriculaRepositorio.Object);
+
+        Matricula matriculaInvalida = null;
+        const int matriculaIdInvalida = 1;
+
+        matriculaRepositorio.Setup(r => r.ObterPorId(It.IsAny<int>())).Returns(matriculaInvalida);
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                conclusaoMatricula.Concluir(matriculaIdInvalida, notaDoAluno))
+            .ComMensagem(Resource.MatriculaNaoEncontrada);
+
+    }
 }
 
 public class ConclusaoDaMatricula
@@ -38,9 +58,14 @@ public class ConclusaoDaMatricula
         _matriculaRepositorio = matriculaRepositorio;
     }
 
-    public void Concluir(int matriculaId, int notaDoAluno)
+    public void Concluir(int matriculaId, double notaDoAluno)
     {
         var matricula = _matriculaRepositorio.ObterPorId(matriculaId);
+
+        ValidadorDeRegra.Novo()
+            .Quando(matricula == null, Resource.MatriculaNaoEncontrada)
+            .DispararExcecaoSeExistir();
+
         matricula.InformarNota(notaDoAluno);
     }
 }
