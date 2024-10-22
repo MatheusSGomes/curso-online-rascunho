@@ -12,6 +12,7 @@ public class Matricula : Entidade
     public bool TemDesconto { get; private set; }
     public double NotaDoAluno { get; private set; }
     public bool CursoConcluido { get; private set; }
+    public bool Cancelada { get; private set; }
 
     public Matricula(Aluno aluno, Curso curso, decimal valorPago)
     {
@@ -38,5 +39,10 @@ public class Matricula : Entidade
 
         NotaDoAluno = notaDoAluno;
         this.CursoConcluido = true;
+    }
+
+    public void Cancelar()
+    {
+        Cancelada = true;
     }
 }

@@ -132,4 +132,18 @@ public class MatriculaTest
 
         Assert.True(matricula.CursoConcluido);
     }
+
+    [Fact]
+    public void DeveCancelarMatricula()
+    {
+        // 2 formas de cancelar matrícula
+        // Adicionar uma propriedade 'cancelada'
+        // Remover a matrícula do banco
+
+        var matricula = MatriculaBuilder.Novo().Build();
+
+        matricula.Cancelar();
+
+        Assert.True(matricula.Cancelada);
+    }
 }
