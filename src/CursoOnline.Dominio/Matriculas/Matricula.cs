@@ -4,7 +4,7 @@ using CursoOnline.Dominio.Cursos;
 
 namespace CursoOnline.Dominio.Matriculas;
 
-public class Matricula
+public class Matricula : Entidade
 {
     public Aluno Aluno { get; private set; }
     public Curso Curso { get; private set; }
