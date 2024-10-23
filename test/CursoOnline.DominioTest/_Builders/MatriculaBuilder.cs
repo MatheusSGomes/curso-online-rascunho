@@ -7,10 +7,11 @@ namespace CursoOnline.DominioTest._Builders;
 
 public class MatriculaBuilder
 {
-    private Aluno _aluno { get; set; }
-    private Curso _curso { get; set; }
-    private decimal _valorPago { get; set; }
-    private bool _cancelada { get; set; }
+    private Aluno _aluno;
+    private Curso _curso;
+    private decimal _valorPago;
+    private bool _cancelada;
+    private bool _concluido;
 
     public static MatriculaBuilder Novo()
     {
@@ -50,12 +51,25 @@ public class MatriculaBuilder
         return this;
     }
 
+    public MatriculaBuilder ComConcluido(bool concluido)
+    {
+        _concluido = concluido;
+        return this;
+    }
+
     public Matricula Build()
     {
         var matricula = new Matricula(aluno: _aluno, curso: _curso, valorPago: _valorPago);
 
         if (_cancelada)
             matricula.Cancelar();
+
+        if (_concluido)
+        {
+            // Conclusão da matricula é feita informando a nota
+            const double notaAluno = 7;
+            matricula.InformarNota(notaAluno);
+        }
 
         return matricula;
     }

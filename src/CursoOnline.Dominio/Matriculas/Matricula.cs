@@ -44,6 +44,10 @@ public class Matricula : Entidade
 
     public void Cancelar()
     {
+        ValidadorDeRegra.Novo()
+            .Quando(CursoConcluido, Resource.MatriculaConcluida)
+            .DispararExcecaoSeExistir();
+
         Cancelada = true;
     }
 }

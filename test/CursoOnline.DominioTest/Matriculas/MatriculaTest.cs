@@ -159,4 +159,17 @@ public class MatriculaTest
                 matricula.InformarNota(notaDoAluno))
             .ComMensagem(Resource.MatriculaCancelada);
     }
+
+    [Fact]
+    public void NaoDeveCancelarQuandoMatriculaEstiverConcluida()
+    {
+        var matricula = MatriculaBuilder.Novo().ComConcluido(true).Build();
+
+        // Para concluir, informamos a nota
+        // const double notaDoAluno = 7;
+        // matricula.InformarNota(notaDoAluno);
+
+        Assert.Throws<ExcecaoDeDominio>(() => matricula.Cancelar())
+            .ComMensagem(Resource.MatriculaConcluida);
+    }
 }
