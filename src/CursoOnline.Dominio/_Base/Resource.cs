@@ -19,4 +19,5 @@ public static class Resource
     public static string AlunoNaoEncontrado = "Aluno não encontrado";
     public static string NotaDoAlunoInvalida = "Nota do aluno inválida";
     public static string MatriculaNaoEncontrada = "Matrícula não encontrada";
+    public static string MatriculaCancelada = "Matrícula cancelada: não é possível essa ação";
 }

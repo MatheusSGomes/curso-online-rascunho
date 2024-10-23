@@ -35,6 +35,7 @@ public class Matricula : Entidade
     {
         ValidadorDeRegra.Novo()
             .Quando(notaDoAluno < 0 || notaDoAluno > 10, Resource.NotaDoAlunoInvalida)
+            .Quando(Cancelada, Resource.MatriculaCancelada)
             .DispararExcecaoSeExistir();
 
         NotaDoAluno = notaDoAluno;

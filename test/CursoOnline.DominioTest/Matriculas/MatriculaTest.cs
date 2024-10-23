@@ -146,4 +146,17 @@ public class MatriculaTest
 
         Assert.True(matricula.Cancelada);
     }
+
+    [Fact]
+    public void NaoDeveInformarNotaQuandoMatriculaEstiverCancelada()
+    {
+        var matricula = MatriculaBuilder.Novo().Build();
+        matricula.Cancelar();
+
+        var notaDoAluno = 3;
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                matricula.InformarNota(notaDoAluno))
+            .ComMensagem(Resource.MatriculaCancelada);
+    }
 }
