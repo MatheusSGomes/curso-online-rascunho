@@ -10,6 +10,7 @@ public class MatriculaBuilder
     private Aluno _aluno { get; set; }
     private Curso _curso { get; set; }
     private decimal _valorPago { get; set; }
+    private bool _cancelada { get; set; }
 
     public static MatriculaBuilder Novo()
     {
@@ -43,11 +44,19 @@ public class MatriculaBuilder
         return this;
     }
 
+    public MatriculaBuilder ComCancelada(bool cancelada)
+    {
+        _cancelada = cancelada;
+        return this;
+    }
+
     public Matricula Build()
     {
-        return new Matricula(
-            aluno: _aluno,
-            curso: _curso,
-            valorPago: _valorPago);
+        var matricula = new Matricula(aluno: _aluno, curso: _curso, valorPago: _valorPago);
+
+        if (_cancelada)
+            matricula.Cancelar();
+
+        return matricula;
     }
 }

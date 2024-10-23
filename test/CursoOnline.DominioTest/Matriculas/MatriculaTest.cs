@@ -150,8 +150,8 @@ public class MatriculaTest
     [Fact]
     public void NaoDeveInformarNotaQuandoMatriculaEstiverCancelada()
     {
-        var matricula = MatriculaBuilder.Novo().Build();
-        matricula.Cancelar();
+        var matricula = MatriculaBuilder.Novo().ComCancelada(true).Build();
+        // matricula.Cancelar();
 
         var notaDoAluno = 3;
 
