@@ -1,5 +1,7 @@
+using CursoOnline.Dominio._Base;
 using CursoOnline.Dominio.Matriculas;
 using CursoOnline.DominioTest._Builders;
+using CursoOnline.DominioTest._Utils;
 using Moq;
 
 namespace CursoOnline.DominioTest.Matriculas;
@@ -33,6 +35,20 @@ public class CancelamentoDaMatriculaTest
         
         Assert.True(matricula.Cancelada);
     }
+
+    [Fact]
+    public void DeveNotificarQuandoMatriculaNaoEncontrada()
+    {
+        Matricula matriculaInvalida = null!;
+        const int matriculaIdInvalida = 1;
+
+        // Vou fazer com que a repository retorne null quando for executado o método ObterPorId
+        _matriculaRepositorio.Setup(r => r.ObterPorId(It.IsAny<int>())).Returns(matriculaInvalida);
+
+        Assert.Throws<ExcecaoDeDominio>(() =>
+                _cancelamentoDaMatricula.Cancelar(matriculaIdInvalida))
+            .ComMensagem(Resource.MatriculaNaoEncontrada);
+    }
 }
 
 public class CancelamentoDaMatricula
@@ -47,6 +63,10 @@ public class CancelamentoDaMatricula
     public void Cancelar(int matriculaId)
     {
         Matricula matricula = _matriculaRepositorio.ObterPorId(matriculaId);
+
+        ValidadorDeRegra.Novo()
+            .Quando(matricula == null, Resource.MatriculaNaoEncontrada)
+            .DispararExcecaoSeExistir();
 
         matricula.Cancelar();
     }
